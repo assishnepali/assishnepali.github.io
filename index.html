@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assish Sapkota</title>
+<meta name="description" content="Assish Sapkota, procurement and supply chain, Helsinki. Try a live sourcing decision and see how small-company purchasing experience maps to a procurement team.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* =========================================================
+   Assish Sapkota – portfolio page
+   Palette: cool paper ground, navy ink, one signal blue for
+   "the decision", kraft (cardboard) for the boxes themselves.
+   Type: Archivo (wide, label-like display), IBM Plex Sans
+   (body), IBM Plex Mono (figures, references, days).
+   ========================================================= */
+:root {
+  --ground: #F3F5F8;
+  --surface: #FFFFFF;
+  --ink: #0E1B2D;
+  --muted: #4F5E77;
+  --rule: #D5DDE7;
+  --rule-strong: #A7B4C6;
+  --signal: #1A58CF;
+  --on-signal: #FFFFFF;
+  --signal-soft: #E5ECFA;
+  --kraft: #A97A3F;
+  --kraft-soft: #F2E6D3;
+  --ok: #0F6E4B;
+  --late: #B02A1C;
+  --late-soft: #FAE4DF;
+  --shadow: rgba(14, 27, 45, 0.28);
+
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0B131F;
+    --surface: #111C2B;
+    --ink: #E6ECF4;
+    --muted: #9DACC1;
+    --rule: #22324A;
+    --rule-strong: #3B4F69;
+    --signal: #75A3FF;
+    --on-signal: #07101C;
+    --signal-soft: #15254A;
+    --kraft: #D2A468;
+    --kraft-soft: #2B2217;
+    --ok: #5FCB9C;
+    --late: #FF8F80;
+    --late-soft: #2E1613;
+    --shadow: rgba(0, 0, 0, 0.55);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #0B131F;
+  --surface: #111C2B;
+  --ink: #E6ECF4;
+  --muted: #9DACC1;
+  --rule: #22324A;
+  --rule-strong: #3B4F69;
+  --signal: #75A3FF;
+  --on-signal: #07101C;
+  --signal-soft: #15254A;
+  --kraft: #D2A468;
+  --kraft-soft: #2B2217;
+  --ok: #5FCB9C;
+  --late: #FF8F80;
+  --late-soft: #2E1613;
+  --shadow: rgba(0, 0, 0, 0.55);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: var(--signal); text-underline-offset: 0.18em; }
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; border-radius: 4px; }
+
+/* Language switch: only the active language is shown */
+#page[data-lang="en"] [lang="fi"],
+#page[data-lang="fi"] [lang="en"] { display: none !important; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 clamp(18px, 4vw, 44px) 48px;
+}
+
+/* ---------- Masthead: reads like the header of a file ---------- */
+.masthead { padding-top: 22px; }
+.masthead__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--ink);
+}
+.masthead__name {
+  font-family: var(--display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.lang-toggle {
+  font: 600 0.85rem/1 var(--mono);
+  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+.lang-toggle:hover { background: var(--ink); color: var(--ground); }
+
+.file {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  border-bottom: 1px solid var(--rule);
+}
+.file > div { padding: 12px 16px 14px 0; }
+.file > div + div { padding-left: 16px; border-left: 1px solid var(--rule); }
+.file dt {
+  font: 500 0.72rem/1.3 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.file dd { margin: 4px 0 0; font-size: 0.95rem; font-weight: 500; line-height: 1.35; }
+
+/* ---------- Hero ---------- */
+.hero {
+  padding: clamp(40px, 7vw, 76px) 0 28px;
+  display: grid;
+  gap: 18px;
+  max-width: 920px;
+}
+.eyebrow {
+  font: 600 0.8rem/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+.hero h1 {
+  font-family: var(--display);
+  font-stretch: 112%;
+  font-weight: 800;
+  font-size: clamp(2.3rem, 5.6vw, 4.4rem);
+  line-height: 1.0;
+  letter-spacing: -0.015em;
+}
+.lede { font-size: clamp(1.05rem, 1.6vw, 1.2rem); color: var(--muted); max-width: 62ch; }
+
+/* ---------- The sourcing desk (interactive) ---------- */
+.desk {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: clamp(18px, 3vw, 30px);
+  display: grid;
+  gap: 26px;
+  box-shadow: 0 22px 44px -32px var(--shadow);
+}
+.desk__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 36px;
+  align-items: end;
+  justify-content: space-between;
+}
+.label {
+  font: 500 0.74rem/1.3 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+}
+.need {
+  font-family: var(--display);
+  font-stretch: 100%;
+  font-weight: 650;
+  font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+  line-height: 1.3;
+  margin-top: 6px;
+  max-width: 36ch;
+}
+.deadline { flex: 0 1 380px; min-width: min(100%, 300px); }
+.deadline label { display: block; }
+.deadline__control { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+.deadline input[type="range"] { flex: 1; accent-color: var(--signal); height: 30px; cursor: pointer; margin: 0; }
+.deadline output {
+  font: 700 1.1rem/1 var(--mono);
+  min-width: 7.5ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Lead-time chart: one lane per quote, drawn to a 0-20 day scale */
+.lanes { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); column-gap: 12px; }
+.lanes__ids { display: grid; grid-template-rows: repeat(3, 34px); row-gap: 10px; padding-top: 32px; }
+.lanes__id { font: 700 0.95rem/34px var(--mono); text-align: center; }
+.plot { position: relative; padding-top: 32px; }
+.tracks { display: grid; grid-template-rows: repeat(3, 34px); row-gap: 10px; }
+.track {
+  position: relative;
+  border-radius: 4px;
+  background:
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px) 0 0 / 25% 100% repeat-x,
+    color-mix(in srgb, var(--ground) 60%, transparent);
+}
+.bar {
+  position: absolute; left: 0; top: 8px; bottom: 8px;
+  background: var(--rule-strong);
+  border-radius: 3px;
+  transition: width 0.28s ease;
+}
+.track.is-suggested .bar { background: var(--signal); }
+.bar-late {
+  position: absolute; top: 8px; bottom: 8px;
+  border: 1.5px solid var(--late);
+  border-radius: 0 3px 3px 0;
+  background: repeating-linear-gradient(135deg, var(--late) 0 3px, var(--late-soft) 3px 7px);
+  transition: left 0.28s ease, width 0.28s ease;
+}
+.tag {
+  position: absolute; top: 50%;
+  transform: translateY(-50%);
+  margin-left: 8px;
+  font: 600 0.8rem/1 var(--mono);
+  white-space: nowrap;
+  color: var(--ink);
+  background: var(--surface);
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: left 0.28s ease;
+}
+.deadline-line {
+  position: absolute; top: 26px; bottom: 36px;
+  border-left: 2px dashed var(--ink);
+  transition: left 0.28s ease;
+  pointer-events: none;
+}
+.deadline-flag {
+  position: absolute; top: 0;
+  font: 600 0.74rem/1 var(--mono);
+  white-space: nowrap;
+  background: var(--ink);
+  color: var(--surface);
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: left 0.28s ease, transform 0.28s ease;
+}
+.axis { position: relative; height: 30px; margin-top: 6px; border-top: 1px solid var(--rule-strong); }
+.axis span {
+  position: absolute; top: 7px;
+  transform: translateX(-50%);
+  font: 500 0.76rem/1 var(--mono);
+  color: var(--muted);
+}
+.lanes__caption { grid-column: 2; margin-top: 2px; }
+
+/* Quote cards */
+.quotes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.quote {
+  border: 1px solid var(--rule-strong);
+  border-radius: 10px;
+  padding: 16px 16px 14px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  background: var(--surface);
+}
+.quote.is-late { border-style: dashed; }
+.quote.is-suggested {
+  border: 2px solid var(--signal);
+  padding: 15px 15px 13px;
+  background: var(--signal-soft);
+}
+.quote__head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.quote__id {
+  width: 34px; height: 34px; flex: none;
+  display: grid; place-items: center;
+  border-radius: 5px;
+  background: var(--kraft-soft);
+  border: 1.5px solid var(--kraft);
+  font: 700 1rem/1 var(--mono);
+}
+.quote__name { font-weight: 600; line-height: 1.2; }
+.quote__country { font-size: 0.85rem; color: var(--muted); line-height: 1.3; }
+.badge {
+  margin-left: auto;
+  font: 700 0.7rem/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 6px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.badge--suggested { background: var(--signal); color: var(--on-signal); }
+.badge--late { border: 1.5px solid var(--late); color: var(--late); }
+.badge--fast { border: 1.5px solid var(--ink); color: var(--ink); }
+
+.calc { margin: 0; display: grid; gap: 5px; font-variant-numeric: tabular-nums; }
+.calc > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.calc dt { color: var(--muted); font: 500 0.84rem/1.3 var(--mono); }
+.calc dd { margin: 0; font: 500 0.9rem/1.3 var(--mono); }
+.calc__total { border-top: 1px solid var(--rule-strong); padding-top: 7px; margin-top: 2px; }
+.calc__total dt { color: var(--ink); font: 600 0.95rem/1.3 var(--body); }
+.calc__total dd { font-family: var(--display); font-stretch: 110%; font-weight: 800; font-size: 1.5rem; line-height: 1; }
+.quote__unit { font-size: 0.85rem; color: var(--muted); margin-top: -4px; }
+.facts {
+  list-style: none; margin: 0; padding: 10px 0 0;
+  border-top: 1px solid var(--rule);
+  display: grid; gap: 6px;
+  font-size: 0.93rem; line-height: 1.4;
+}
+.fact { display: flex; gap: 8px; align-items: baseline; }
+.fact__mark { font: 700 0.9rem/1 var(--mono); width: 1.1em; flex: none; text-align: center; }
+.fact--ok .fact__mark { color: var(--ok); }
+.fact--late { color: var(--late); font-weight: 600; }
+
+/* Verdict */
+.verdict {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 10px 36px;
+  padding-top: 22px;
+  border-top: 2px solid var(--ink);
+}
+.verdict__headline {
+  font-family: var(--display);
+  font-stretch: 108%;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  line-height: 1.08;
+  margin-top: 8px;
+}
+.verdict__reasons { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; }
+.verdict__reasons li::marker { color: var(--muted); }
+.desk__note { font: 0.8rem/1.5 var(--mono); color: var(--muted); }
+
+/* ---------- Sections ---------- */
+.section {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 18px 40px;
+  padding-top: clamp(48px, 6vw, 76px);
+}
+.section__label {
+  font: 500 0.78rem/1.3 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+  padding-top: 10px;
+  border-top: 2px solid var(--ink);
+}
+.section__body {
+  display: grid;
+  gap: 26px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule);
+  min-width: 0;
+}
+.statement {
+  font-family: var(--display);
+  font-stretch: 108%;
+  font-weight: 750;
+  font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  max-width: 26ch;
+}
+
+.role { display: grid; gap: 18px; }
+.role__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 16px; }
+.role__title { font-size: 1.25rem; font-weight: 600; line-height: 1.3; }
+.role__org { color: var(--muted); }
+.role__dates { margin-left: auto; font: 500 0.85rem/1.4 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.figures {
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.figures li { padding: 14px 14px 16px 0; display: grid; gap: 6px; align-content: start; }
+.figures li + li { padding-left: 16px; border-left: 1px solid var(--rule); }
+.fig {
+  font-family: var(--display);
+  font-stretch: 112%;
+  font-weight: 800;
+  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.fig__cap { font-size: 0.9rem; color: var(--muted); line-height: 1.35; }
+
+.bridge-wrap { overflow-x: auto; }
+.bridge { width: 100%; border-collapse: collapse; font-size: 0.98rem; }
+.bridge th {
+  text-align: left;
+  font: 500 0.74rem/1.3 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  padding: 0 16px 8px 0;
+  border-bottom: 1.5px solid var(--ink);
+}
+.bridge td { padding: 11px 16px 11px 0; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.45; }
+.bridge td + td { font-weight: 600; white-space: nowrap; }
+.bridge td + td::before { content: "\2192\00a0"; color: var(--muted); font-weight: 400; }
+.honest { color: var(--muted); max-width: 62ch; font-size: 0.98rem; }
+.role--minor { padding-top: 22px; border-top: 1px solid var(--rule); gap: 8px; }
+.role--minor p:last-child { max-width: 62ch; }
+
+.principles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.principles li { display: grid; gap: 8px; align-content: start; }
+.principles__n { font: 700 0.8rem/1 var(--mono); color: var(--signal); }
+.principles h3 { font-family: var(--display); font-stretch: 105%; font-weight: 750; font-size: 1.28rem; line-height: 1.15; }
+.principles p { color: var(--muted); font-size: 0.98rem; }
+.proof {
+  font: 500 0.84rem/1.45 var(--mono);
+  color: var(--ink) !important;
+  background: var(--kraft-soft);
+  border-left: 3px solid var(--kraft);
+  padding: 8px 10px;
+  border-radius: 0 6px 6px 0;
+}
+
+.project { display: grid; gap: 14px; max-width: 66ch; }
+.project h3 { font-family: var(--display); font-stretch: 112%; font-weight: 800; font-size: 1.9rem; line-height: 1; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  justify-self: start;
+  font: 600 0.97rem/1 var(--body);
+  text-decoration: none;
+  color: var(--on-signal);
+  background: var(--signal);
+  padding: 13px 18px;
+  border-radius: 8px;
+}
+.btn:hover { filter: brightness(1.08); }
+.small { font-size: 0.92rem; color: var(--muted); }
+
+.list { list-style: none; margin: 0; padding: 0; }
+.list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.list li:first-child { padding-top: 0; }
+.list__what { font-weight: 600; line-height: 1.4; }
+.list__where { grid-column: 1; color: var(--muted); font-size: 0.95rem; line-height: 1.4; }
+.list__when {
+  grid-column: 2; grid-row: 1 / span 2;
+  font: 500 0.85rem/1.6 var(--mono);
+  color: var(--muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.sub { font: 500 0.74rem/1.3 var(--mono); text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); margin-bottom: 10px; }
+
+.closing { display: grid; gap: 14px; }
+.closing .statement { max-width: 30ch; }
+.contact { display: flex; flex-wrap: wrap; gap: 10px 14px; }
+.contact a { font-weight: 600; }
+
+.footer {
+  margin-top: clamp(56px, 7vw, 88px);
+  padding-top: 16px;
+  border-top: 2px solid var(--ink);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px 24px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.footer p { max-width: 78ch; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .section { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .section__body { border-top: 0; padding-top: 0; }
+  .file { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .file > div:nth-child(3) { padding-left: 0; border-left: 0; }
+  .file > div:nth-child(n + 3) { border-top: 1px solid var(--rule); }
+  .verdict { grid-template-columns: minmax(0, 1fr); }
+  .principles { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .figures li:nth-child(3) { padding-left: 0; border-left: 0; }
+  .figures li:nth-child(n + 3) { border-top: 1px solid var(--rule); }
+}
+@media (max-width: 820px) {
+  .quotes { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 540px) {
+  body { font-size: 16px; }
+  .masthead__name { font-size: 1.02rem; }
+  .role__dates { margin-left: 0; width: 100%; }
+  .bridge td + td { white-space: normal; }
+  .list li { grid-template-columns: minmax(0, 1fr); }
+  .list__when { grid-column: 1; grid-row: auto; text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
+@media print {
+  .lang-toggle { display: none; }
+  .desk { box-shadow: none; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+<div id="page" data-lang="en">
+<div class="page">
+
+  <!-- ================= MASTHEAD ================= -->
+  <header class="masthead">
+    <div class="masthead__row">
+      <p class="masthead__name">Assish Sapkota</p>
+      <button class="lang-toggle" type="button" id="langToggle">
+        <span lang="en">Suomeksi</span><span lang="fi">In English</span>
+      </button>
+    </div>
+    <dl class="file">
+      <div>
+        <dt lang="en">Field</dt><dt lang="fi">Ala</dt>
+        <dd lang="en">Procurement &amp; supply chain</dd><dd lang="fi">Hankinta ja toimitusketju</dd>
+      </div>
+      <div>
+        <dt lang="en">Based in</dt><dt lang="fi">Asuinpaikka</dt>
+        <dd lang="en">Helsinki, Finland</dd><dd lang="fi">Helsinki</dd>
+      </div>
+      <div>
+        <dt lang="en">Languages</dt><dt lang="fi">Kielet</dt>
+        <dd lang="en">Finnish · English · Nepali · Hindi</dd><dd lang="fi">suomi · englanti · nepali · hindi</dd>
+      </div>
+      <div>
+        <dt lang="en">Looking for</dt><dt lang="fi">Etsin</dt>
+        <dd lang="en">Junior purchasing &amp; sourcing roles</dd><dd lang="fi">Hankinnan ja oston junior-tehtäviä</dd>
+      </div>
+    </dl>
+  </header>
+
+  <main>
+    <!-- ================= HERO ================= -->
+    <section class="hero" aria-labelledby="heroTitle">
+      <p class="eyebrow"><span lang="en">A sourcing decision you can try</span><span lang="fi">Hankintapäätös, jota voit kokeilla</span></p>
+      <h1 id="heroTitle">
+        <span lang="en">The cheapest quote is not always the right buy.</span>
+        <span lang="fi">Halvin tarjous ei aina ole oikea hankinta.</span>
+      </h1>
+      <p class="lede">
+        <span lang="en">Move the delivery deadline and the decision changes, with the reason written out in numbers. It is a small version of how I buy: compare like for like, count the whole cost, and check that the goods arrive in time.</span>
+        <span lang="fi">Siirrä toimituksen määräpäivää, niin päätös muuttuu ja perustelu näkyy lukuina. Näin teen hankintoja pienessä mittakaavassa: vertaan samaa samaan, lasken koko hinnan ja varmistan, että tavara ehtii ajoissa.</span>
+      </p>
+    </section>
+
+    <!-- ================= SOURCING DESK ================= -->
+    <section class="desk" aria-labelledby="deskTitle">
+      <div class="desk__head">
+        <div>
+          <h2 class="label" id="deskTitle"><span lang="en">Purchasing need</span><span lang="fi">Hankintatarve</span></h2>
+          <p class="need">
+            <span lang="en">1,000 corrugated boxes, identical specification, delivered to Vantaa</span>
+            <span lang="fi">1 000 aaltopahvilaatikkoa, sama laatuvaatimus, toimitus Vantaalle</span>
+          </p>
+        </div>
+        <div class="deadline">
+          <label class="label" for="deadline"><span lang="en">Needed within</span><span lang="fi">Tarvitaan viimeistään</span></label>
+          <div class="deadline__control">
+            <input type="range" id="deadline" min="4" max="20" step="1" value="10">
+            <output id="deadlineOut" for="deadline">10</output>
+          </div>
+        </div>
+      </div>
+
+      <div class="lanes" aria-hidden="true">
+        <div class="lanes__ids" id="laneIds"></div>
+        <div class="plot" id="plot"></div>
+        <p class="label lanes__caption">
+          <span lang="en">Days from order · dashed line = required date</span>
+          <span lang="fi">Päivää tilauksesta · katkoviiva = määräpäivä</span>
+        </p>
+      </div>
+
+      <div class="quotes" id="quotes"></div>
+
+      <div class="verdict" id="verdict" aria-live="polite"></div>
+
+      <p class="desk__note">
+        <span lang="en">Fictional suppliers · EUR, excluding VAT · total = 1,000 × unit price + freight</span>
+        <span lang="fi">Kuvitteelliset toimittajat · euroa, alv 0 % · yhteensä = 1 000 × kappalehinta + rahti</span>
+      </p>
+    </section>
+
+    <!-- ================= EXPERIENCE ================= -->
+    <section class="section" aria-labelledby="expLabel">
+      <h2 class="section__label" id="expLabel"><span lang="en">Experience</span><span lang="fi">Kokemus</span></h2>
+      <div class="section__body">
+        <p class="statement">
+          <span lang="en">I have already done this work in a small company.</span>
+          <span lang="fi">Olen jo tehnyt tätä työtä pienyrityksessä.</span>
+        </p>
+
+        <article class="role">
+          <header class="role__head">
+            <h3 class="role__title"><span lang="en">Founding Partner, responsible for operations</span><span lang="fi">Perustajaosakas, vastuu operatiivisesta toiminnasta</span></h3>
+            <p class="role__org"><span lang="en">Sab Market Oy · grocery business, Tampere · full time</span><span lang="fi">Sab Market Oy · ruokakauppa, Tampere · kokoaikainen</span></p>
+            <p class="role__dates">03/2025–03/2026</p>
+          </header>
+
+          <ul class="figures">
+            <li>
+              <span class="fig">7</span>
+              <span class="fig__cap"><span lang="en">suppliers, 4 of them abroad</span><span lang="fi">toimittajaa, joista 4 ulkomailla</span></span>
+            </li>
+            <li>
+              <span class="fig">3</span>
+              <span class="fig__cap"><span lang="en">countries I bought from abroad: Germany, the Netherlands, Belgium</span><span lang="fi">ostomaata ulkomailla: Saksa, Alankomaat, Belgia</span></span>
+            </li>
+            <li>
+              <span class="fig"><span lang="en">≈ €177k</span><span lang="fi">≈ 177 t€</span></span>
+              <span class="fig__cap"><span lang="en">company turnover</span><span lang="fi">yrityksen liikevaihto</span></span>
+            </li>
+            <li>
+              <span class="fig">≈ 15</span>
+              <span class="fig__cap"><span lang="en">regular business customers</span><span lang="fi">vakituista yritysasiakasta</span></span>
+            </li>
+          </ul>
+
+          <div class="bridge-wrap">
+            <table class="bridge">
+              <caption class="visually-hidden">
+                <span lang="en">Tasks from Sab Market Oy and the matching procurement terms</span>
+                <span lang="fi">Sab Market Oy:n tehtävät ja niitä vastaavat hankinnan termit</span>
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col"><span lang="en">What I did</span><span lang="fi">Mitä tein</span></th>
+                  <th scope="col"><span lang="en">What a procurement team calls it</span><span lang="fi">Nimi hankintatiimissä</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span lang="en">Bought from seven suppliers: wholesalers in Germany, the Netherlands and Belgium, and domestic suppliers</span><span lang="fi">Ostin seitsemältä toimittajalta: tukuista Saksasta, Alankomaista ja Belgiasta sekä kotimaisilta toimittajilta</span></td>
+                  <td><span lang="en">Supplier management</span><span lang="fi">Toimittajahallinta</span></td>
+                </tr>
+                <tr>
+                  <td><span lang="en">Compared products and prices, and negotiated better purchase prices and payment terms</span><span lang="fi">Vertailin tuotteita ja hintoja ja neuvottelin parempia ostohintoja ja maksuehtoja</span></td>
+                  <td><span lang="en">Commercial negotiation</span><span lang="fi">Kaupalliset neuvottelut</span></td>
+                </tr>
+                <tr>
+                  <td><span lang="en">Placed and confirmed orders, checked supplier invoices and made the payments</span><span lang="fi">Tein ja vahvistin tilaukset, tarkistin toimittajien laskut ja hoidin maksut</span></td>
+                  <td>Purchase-to-pay (P2P)</td>
+                </tr>
+                <tr>
+                  <td><span lang="en">Handled stock replenishment</span><span lang="fi">Hoidin varaston täydennykset</span></td>
+                  <td><span lang="en">Inventory management</span><span lang="fi">Varastonhallinta</span></td>
+                </tr>
+                <tr>
+                  <td><span lang="en">Grew the B2B customer base to about 15 regular business customers and handled their invoicing and deliveries</span><span lang="fi">Kasvatin B2B-asiakaskunnan noin 15 vakioyritysasiakkaaseen ja hoidin heidän laskutuksensa ja toimituksensa</span></td>
+                  <td><span lang="en">B2B sales and deliveries</span><span lang="fi">B2B-myynti ja toimitukset</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="honest">
+            <span lang="en">Smaller volumes than a corporate purchasing team, but the same decisions: who to buy from, on what terms, and what to follow up. My work certificate describes the job as full-time responsibility for daily operations, including international purchasing, order and supply chain management, inventory, invoicing, payments and B2B sales.</span>
+            <span lang="fi">Volyymit olivat pienempiä kuin suuryrityksen hankintatiimissä, mutta päätökset samat: keneltä ostetaan, millä ehdoilla ja mitä pitää seurata. Työtodistukseni mukaan vastuullani oli kokoaikaisesti yrityksen päivittäinen toiminta, mukaan lukien kansainväliset hankinnat, tilaus- ja toimitusketjun hallinta, varastonhallinta, laskutus, maksuliikenne ja B2B-myynti.</span>
+          </p>
+        </article>
+
+        <article class="role role--minor">
+          <header class="role__head">
+            <h3 class="role__title"><span lang="en">Shift Manager</span><span lang="fi">Vuoropäällikkö</span></h3>
+            <p class="role__org">Sushibar + Wine, NoHo Partners · Helsinki</p>
+            <p class="role__dates">09/2023–01/2025</p>
+          </header>
+          <p>
+            <span lang="en">Promoted from waiter (11/2021–08/2023). Handled product orders, stocktaking and cash reconciliation, and coordinated the team during shifts. My work certificate rates both work skills and conduct as excellent.</span>
+            <span lang="fi">Etenin tarjoilijasta (11/2021–08/2023) vuoropäälliköksi. Hoidin tuotetilauksia, inventointeja ja kassatilityksiä ja ohjasin tiimiä vuorojen aikana. Työtodistuksessa sekä työtaito että käytös on arvioitu erinomaisiksi.</span>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= HOW I DECIDE ================= -->
+    <section class="section" aria-labelledby="decideLabel">
+      <h2 class="section__label" id="decideLabel"><span lang="en">How I decide</span><span lang="fi">Näin päätän</span></h2>
+      <div class="section__body">
+        <p class="statement">
+          <span lang="en">Three rules I do not skip.</span>
+          <span lang="fi">Kolme sääntöä, joista en jousta.</span>
+        </p>
+        <ol class="principles">
+          <li>
+            <span class="principles__n">1</span>
+            <h3><span lang="en">Compare like for like</span><span lang="fi">Vertaa samaa samaan</span></h3>
+            <p><span lang="en">Same specification, quantity and unit. Otherwise the comparison says nothing.</span><span lang="fi">Sama laatuvaatimus, määrä ja yksikkö. Muuten vertailu ei kerro mitään.</span></p>
+            <p class="proof"><span lang="en">All three quotes above: same box, same 1,000 pieces.</span><span lang="fi">Kaikki kolme tarjousta yllä: sama laatikko, samat 1 000 kpl.</span></p>
+          </li>
+          <li>
+            <span class="principles__n">2</span>
+            <h3><span lang="en">Count the whole cost</span><span lang="fi">Laske koko hinta</span></h3>
+            <p><span lang="en">Unit price plus freight, charges and discounts. A cheap unit price with expensive freight is not cheap.</span><span lang="fi">Kappalehinta, rahti, lisämaksut ja alennukset. Halpa kappalehinta kalliilla rahdilla ei ole halpa.</span></p>
+            <p class="proof"><span lang="en">Supplier A: €1.00 a box on paper, €1.25 with freight.</span><span lang="fi">Toimittaja A: paperilla 1,00 € laatikolta, rahdin kanssa 1,25 €.</span></p>
+          </li>
+          <li>
+            <span class="principles__n">3</span>
+            <h3><span lang="en">Write the reason down</span><span lang="fi">Kirjaa perustelu</span></h3>
+            <p><span lang="en">If I choose anything other than the suggested option, I record why, so the decision can be checked later.</span><span lang="fi">Jos valitsen muun kuin suositellun vaihtoehdon, kirjaan syyn, jotta päätöksen voi tarkistaa jälkikäteen.</span></p>
+            <p class="proof"><span lang="en">Supplier C with a 10-day deadline is possible, but only with a written reason for arriving 5 days late.</span><span lang="fi">Toimittaja C:n voi valita 10 päivän määräajalla, mutta viiden päivän viiveelle tarvitaan kirjallinen perustelu.</span></p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= PROJECT ================= -->
+    <section class="section" aria-labelledby="projectLabel">
+      <h2 class="section__label" id="projectLabel"><span lang="en">Project</span><span lang="fi">Projekti</span></h2>
+      <div class="section__body">
+        <div class="project">
+          <h3>ProcureFlow</h3>
+          <p>
+            <span lang="en">The same thinking as a working tool in the browser: purchasing requests, like-for-like quotation comparison, a recorded supplier decision, purchase orders and goods receipts, including partial and late deliveries.</span>
+            <span lang="fi">Sama ajattelu toimivana selainsovelluksena: hankintapyynnöt, tarjousten vertailu samaa samaan, kirjattu toimittajavalinta, ostotilaukset ja tavaran vastaanotto, myös osittaiset ja myöhästyneet toimitukset.</span>
+          </p>
+          <p class="small">
+            <span lang="en">I defined the purchasing workflow and the decision rules it follows. The code was written with AI assistance. All organisations and transactions in it are fictional.</span>
+            <span lang="fi">Määrittelin hankintaprosessin ja päätössäännöt, joita se noudattaa. Koodi on kirjoitettu tekoälyn avustamana. Kaikki sen organisaatiot ja tapahtumat ovat kuvitteellisia.</span>
+          </p>
+          <a class="btn" id="procureflowLink" href="procureflow/">
+            <span lang="en">Open ProcureFlow</span><span lang="fi">Avaa ProcureFlow</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= EDUCATION ================= -->
+    <section class="section" aria-labelledby="eduLabel">
+      <h2 class="section__label" id="eduLabel"><span lang="en">Education</span><span lang="fi">Koulutus</span></h2>
+      <div class="section__body">
+        <ul class="list">
+          <li>
+            <span class="list__what"><span lang="en">Master's studies (YAMK), responsible supply networks</span><span lang="fi">Ylempi AMK, vastuullinen toimitusverkosto</span></span>
+            <span class="list__where"><span lang="en">Satakunta University of Applied Sciences (SAMK)</span><span lang="fi">Satakunnan ammattikorkeakoulu (SAMK)</span></span>
+            <span class="list__when">2026–</span>
+          </li>
+          <li>
+            <span class="list__what"><span lang="en">Bachelor of Hospitality Management (Restonomi AMK)</span><span lang="fi">Restonomi (AMK), hotelli- ja ravintola-alan liikkeenjohto</span></span>
+            <span class="list__where"><span lang="en">Haaga-Helia University of Applied Sciences</span><span lang="fi">Haaga-Helia ammattikorkeakoulu</span></span>
+            <span class="list__when">2020–2023</span>
+          </li>
+          <li>
+            <span class="list__what"><span lang="en">Finnish matriculation examination</span><span lang="fi">Ylioppilastutkinto</span></span>
+            <span class="list__where">Helsingin Yhteislyseo</span>
+            <span class="list__when">2018</span>
+          </li>
+        </ul>
+
+        <div>
+          <p class="sub"><span lang="en">Courses</span><span lang="fi">Kurssit</span></p>
+          <ul class="list">
+          <li>
+            <span class="list__what">Foundations of Project Management</span>
+            <span class="list__where">Google · Coursera</span>
+            <span class="list__when">05/2026</span>
+          </li>
+          <li>
+            <span class="list__what">Excel Skills for Business: Essentials</span>
+            <span class="list__where">Macquarie University · Coursera</span>
+            <span class="list__when">04/2026</span>
+          </li>
+          <li>
+            <span class="list__what">AI Fundamentals</span>
+            <span class="list__where">Google · Coursera</span>
+            <span class="list__when">04/2026</span>
+          </li>
+          <li>
+            <span class="list__what">Foundations: Data, Data, Everywhere</span>
+            <span class="list__where">Google</span>
+            <span class="list__when"></span>
+          </li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="sub"><span lang="en">Languages</span><span lang="fi">Kielet</span></p>
+          <ul class="list">
+          <li>
+            <span class="list__what"><span lang="en">Finnish</span><span lang="fi">Suomi</span></span>
+            <span class="list__where"><span lang="en">Matriculation examination and all of my studies in Finnish</span><span lang="fi">Ylioppilastutkinto ja kaikki opintoni suomeksi</span></span>
+            <span class="list__when"><span lang="en">excellent</span><span lang="fi">erinomainen</span></span>
+          </li>
+          <li>
+            <span class="list__what"><span lang="en">English</span><span lang="fi">Englanti</span></span>
+            <span class="list__where"></span>
+            <span class="list__when"><span lang="en">fluent</span><span lang="fi">sujuva</span></span>
+          </li>
+          <li>
+            <span class="list__what">Nepali</span>
+            <span class="list__where"></span>
+            <span class="list__when"><span lang="en">native</span><span lang="fi">äidinkieli</span></span>
+          </li>
+          <li>
+            <span class="list__what">Hindi</span>
+            <span class="list__where"></span>
+            <span class="list__when"><span lang="en">good</span><span lang="fi">hyvä</span></span>
+          </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LOOKING FOR ================= -->
+    <section class="section" aria-labelledby="nextLabel">
+      <h2 class="section__label" id="nextLabel"><span lang="en">Looking for</span><span lang="fi">Etsin</span></h2>
+      <div class="section__body closing">
+        <p class="statement">
+          <span lang="en">A junior role in purchasing, sourcing or supply chain in Finland.</span>
+          <span lang="fi">Junior-tehtävää hankinnasta, sourcingista tai toimitusketjusta.</span>
+        </p>
+        <p class="lede">
+          <span lang="en">I have just started a master's degree in this field and want to use it at work now, not only after graduation. I can work full time alongside my studies.</span>
+          <span lang="fi">Aloitin juuri alan YAMK-opinnot ja haluan käyttää osaamistani työssä jo nyt enkä vasta valmistuttuani. Voin tehdä kokoaikaista työtä opintojen ohella.</span>
+        </p>
+        <div class="contact" id="contact" hidden></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>
+      <span lang="en">About this page: the sourcing scenario is fictional and simplified (EUR, excluding VAT). Figures about my own work are approximate and come from my CV and work certificates. This page and ProcureFlow were made with AI assistance.</span>
+      <span lang="fi">Tästä sivusta: hankintaesimerkki on kuvitteellinen ja yksinkertaistettu (euroa, alv 0 %). Omaa työtäni koskevat luvut ovat likimääräisiä ja perustuvat CV:hen ja työtodistuksiin. Sivu ja ProcureFlow on tehty tekoälyn avustamana.</span>
+    </p>
+    <p>Assish Sapkota · Helsinki</p>
+  </footer>
+
+</div>
+</div>
+
+<script>
+/* =========================================================
+   Settings you can edit
+   ========================================================= */
+// Fill these in to show a contact block at the bottom of the page.
+// Leave them empty ("") to hide it.
+var CONTACT = {
+  email: "",
+  linkedin: "https://www.linkedin.com/in/assishsapkota"   // full address, e.g. "https://www.linkedin.com/in/your-name"
+};
+var PROCUREFLOW_URL = "procureflow/";
+
+/* =========================================================
+   The sourcing scenario
+   Money is kept in cents so the maths is exact.
+   ========================================================= */
+(function () {
+  "use strict";
+
+  var QTY = 1000;
+  var AXIS_MAX = 20;
+
+  var QUOTES = [
+    { id: "A", country: { en: "Finland", fi: "Suomi" },           unitCents: 100, freightCents: 25000, days: 6,  terms: 14 },
+    { id: "B", country: { en: "Netherlands", fi: "Alankomaat" },  unitCents: 110, freightCents: 8000,  days: 8,  terms: 30 },
+    { id: "C", country: { en: "Estonia", fi: "Viro" },            unitCents: 95,  freightCents: 10000, days: 15, terms: 30 }
+  ];
+  QUOTES.forEach(function (q) {
+    q.goodsCents = QTY * q.unitCents;
+    q.totalCents = q.goodsCents + q.freightCents;
+    q.perBoxCents = q.totalCents / QTY;
+  });
+
+  /* ---------- wording in both languages ---------- */
+  function plural(n, one, many) { return n === 1 ? one : many; }
+
+  var STR = {
+    en: {
+      supplier: function (id) { return "Supplier " + id; },
+      freight: "Freight",
+      total: "Total",
+      perBox: function (v) { return v + " per box, freight included"; },
+      arrives: function (d) { return "Arrives day " + d; },
+      spare: function (n) { return n === 0 ? "exactly on the deadline" : n + " " + plural(n, "day", "days") + " to spare"; },
+      late: function (n) { return n + " " + plural(n, "day", "days") + " late"; },
+      pay: function (n) { return "Pay within " + n + " days"; },
+      badgeSuggested: "Suggested",
+      badgeCheapLate: "Cheapest, but late",
+      badgeFastest: "Fastest",
+      dayTag: function (d) { return "Day " + d; },
+      flag: function (d) { return "Required by day " + d; },
+      out: function (d) { return d + " days"; },
+      decision: "Decision",
+      headline: function (id, total) { return "Choose Supplier " + id + ": " + total; },
+      reasonOnly: function (d) { return "It is the only quote that arrives by day " + d + "."; },
+      reasonLowest: function (d) { return "It has the lowest total cost of the quotes that arrive by day " + d + "."; },
+      vsOnTime: function (id, diff, terms) { return diff + " less than Supplier " + id + ", which also arrives in time" + terms + "."; },
+      termsBetter: function (a, b) { return ", with " + a + " days to pay instead of " + b; },
+      vsLateCheaper: function (id, diff, n) { return "Supplier " + id + " is " + diff + " cheaper but arrives " + STR.en.late(n) + ". Choosing it would need a written reason."; },
+      vsLateDearer: function (id, n) { return "Supplier " + id + " costs more and arrives " + STR.en.late(n) + "."; },
+      noneHeadline: function (d) { return "No supplier can deliver within " + d + " days."; },
+      none1: "So I would not name a winner.",
+      none2: function (id, day) { return "Ask Supplier " + id + ", the fastest at day " + day + ", whether it can deliver sooner."; },
+      none3: "Or check whether the business can accept a later date."
+    },
+    fi: {
+      supplier: function (id) { return "Toimittaja " + id; },
+      freight: "Rahti",
+      total: "Yhteensä",
+      perBox: function (v) { return v + " laatikolta rahteineen"; },
+      arrives: function (d) { return "Perillä päivänä " + d; },
+      spare: function (n) { return n === 0 ? "juuri määräpäivänä" : n + " " + plural(n, "päivä", "päivää") + " varaa"; },
+      late: function (n) { return n + " " + plural(n, "päivä", "päivää") + " myöhässä"; },
+      pay: function (n) { return "Maksuaika " + n + " päivää"; },
+      badgeSuggested: "Suositus",
+      badgeCheapLate: "Halvin, mutta myöhässä",
+      badgeFastest: "Nopein",
+      dayTag: function (d) { return "Päivä " + d; },
+      flag: function (d) { return "Määräpäivä: päivä " + d; },
+      out: function (d) { return d + " päivää"; },
+      decision: "Päätös",
+      headline: function (id, total) { return "Valitse toimittaja " + id + ": " + total; },
+      reasonOnly: function (d) { return "Se on ainoa tarjous, joka ehtii perille päivään " + d + " mennessä."; },
+      reasonLowest: function (d) { return "Sen kokonaishinta on edullisin niistä tarjouksista, jotka ehtivät perille päivään " + d + " mennessä."; },
+      vsOnTime: function (id, diff, terms) { return diff + " halvempi kuin toimittaja " + id + ", joka myös ehtii ajoissa" + terms + "."; },
+      termsBetter: function (a, b) { return ", ja maksuaika on " + a + " päivää " + b + " päivän sijaan"; },
+      vsLateCheaper: function (id, diff, n) { return "Toimittaja " + id + " on " + diff + " halvempi, mutta perillä " + STR.fi.late(n) + ". Sen valitseminen vaatisi kirjallisen perustelun."; },
+      vsLateDearer: function (id, n) { return "Toimittaja " + id + " on kalliimpi ja perillä " + STR.fi.late(n) + "."; },
+      noneHeadline: function (d) { return "Yksikään toimittaja ei ehdi toimittaa " + d + " päivässä."; },
+      none1: "En siksi nimeäisi voittajaa.",
+      none2: function (id, day) {
+        // Finnish case ending follows how the letter is pronounced: A:lta, B:ltä, C:ltä
+        var ending = id === "A" ? ":lta" : ":ltä";
+        return "Kysyisin nopeimmalta, toimittaja " + id + ending + " (päivä " + day + "), voiko se toimittaa aiemmin.";
+      },
+      none3: "Tai selvittäisin, voiko määräpäivää siirtää."
+    }
+  };
+
+  /* ---------- formatting ---------- */
+  function money(cents, lang, alwaysDecimals) {
+    var whole = cents % 100 === 0 && !alwaysDecimals;
+    return new Intl.NumberFormat(lang === "fi" ? "fi-FI" : "en-IE", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: whole ? 0 : 2,
+      maximumFractionDigits: whole ? 0 : 2
+    }).format(cents / 100);
+  }
+  function count(n, lang) {
+    return new Intl.NumberFormat(lang === "fi" ? "fi-FI" : "en-IE").format(n);
+  }
+  function esc(text) {
+    return String(text).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  /* ---------- the decision rule ----------
+     Among quotes that arrive by the deadline, suggest the lowest total
+     cost (earlier delivery breaks a tie). If none arrive in time, do
+     not suggest anything.                                              */
+  function byCost(a, b) { return a.totalCents - b.totalCents || a.days - b.days; }
+
+  function decide(deadline) {
+    var onTime = QUOTES.filter(function (q) { return q.days <= deadline; });
+    var cheapest = QUOTES.slice().sort(byCost)[0];
+    if (onTime.length === 0) {
+      var fastest = QUOTES.slice().sort(function (a, b) { return a.days - b.days || a.totalCents - b.totalCents; })[0];
+      return { none: true, fastest: fastest, cheapest: cheapest };
+    }
+    return { none: false, rec: onTime.slice().sort(byCost)[0], onTime: onTime, cheapest: cheapest };
+  }
+
+  /* ---------- DOM ---------- */
+  var page = document.getElementById("page");
+  var slider = document.getElementById("deadline");
+  var out = document.getElementById("deadlineOut");
+  var quotesEl = document.getElementById("quotes");
+  var verdictEl = document.getElementById("verdict");
+  var plot = document.getElementById("plot");
+  var laneIds = document.getElementById("laneIds");
+  var lang = "en";
+  var lanes = [];
+  var line, flag;
+
+  function pct(day) { return (day / AXIS_MAX) * 100; }
+
+  // Build the lead-time chart once; later updates only move things,
+  // which lets the bars glide instead of being redrawn.
+  function buildChart() {
+    laneIds.innerHTML = QUOTES.map(function (q) {
+      return '<span class="lanes__id">' + q.id + "</span>";
+    }).join("");
+
+    var tracks = document.createElement("div");
+    tracks.className = "tracks";
+    QUOTES.forEach(function (q) {
+      var track = document.createElement("div");
+      track.className = "track";
+      var bar = document.createElement("div");
+      bar.className = "bar";
+      var late = document.createElement("div");
+      late.className = "bar-late";
+      var tag = document.createElement("span");
+      tag.className = "tag";
+      track.appendChild(bar);
+      track.appendChild(late);
+      track.appendChild(tag);
+      tracks.appendChild(track);
+      lanes.push({ q: q, track: track, bar: bar, late: late, tag: tag });
+    });
+
+    flag = document.createElement("span");
+    flag.className = "deadline-flag";
+    line = document.createElement("div");
+    line.className = "deadline-line";
+
+    var axis = document.createElement("div");
+    axis.className = "axis";
+    axis.innerHTML = [0, 5, 10, 15, 20].map(function (d) {
+      return '<span style="left:' + pct(d) + '%">' + d + "</span>";
+    }).join("");
+
+    plot.appendChild(flag);
+    plot.appendChild(tracks);
+    plot.appendChild(line);
+    plot.appendChild(axis);
+  }
+
+  function updateChart(deadline, result) {
+    var s = STR[lang];
+    lanes.forEach(function (l) {
+      var q = l.q;
+      var isLate = q.days > deadline;
+      var suggested = !result.none && result.rec.id === q.id;
+      l.track.classList.toggle("is-suggested", suggested);
+      l.bar.style.width = pct(Math.min(q.days, deadline)) + "%";
+      l.late.hidden = !isLate;
+      if (isLate) {
+        l.late.style.left = pct(deadline) + "%";
+        l.late.style.width = pct(q.days - deadline) + "%";
+      }
+      l.tag.style.left = pct(q.days) + "%";
+      l.tag.textContent = s.dayTag(q.days);
+    });
+
+    var p = pct(deadline);
+    line.style.left = p + "%";
+    flag.style.left = p + "%";
+    flag.style.transform = p > 78 ? "translateX(-100%)" : p < 16 ? "translateX(-8px)" : "translateX(-50%)";
+    flag.textContent = s.flag(deadline);
+  }
+
+  function renderQuotes(deadline, result) {
+    var s = STR[lang];
+    quotesEl.innerHTML = QUOTES.map(function (q) {
+      var isLate = q.days > deadline;
+      var suggested = !result.none && result.rec.id === q.id;
+
+      var badge = "";
+      if (suggested) {
+        badge = '<span class="badge badge--suggested">' + s.badgeSuggested + "</span>";
+      } else if (result.none && result.fastest.id === q.id) {
+        badge = '<span class="badge badge--fast">' + s.badgeFastest + "</span>";
+      } else if (isLate && result.cheapest.id === q.id) {
+        badge = '<span class="badge badge--late">' + s.badgeCheapLate + "</span>";
+      }
+
+      var timing = isLate
+        ? '<li class="fact fact--late"><span class="fact__mark" aria-hidden="true">✕</span><span>' +
+          s.arrives(q.days) + " · " + s.late(q.days - deadline) + "</span></li>"
+        : '<li class="fact fact--ok"><span class="fact__mark" aria-hidden="true">✓</span><span>' +
+          s.arrives(q.days) + " · " + s.spare(deadline - q.days) + "</span></li>";
+
+      return (
+        '<article class="quote' + (suggested ? " is-suggested" : "") + (isLate ? " is-late" : "") + '">' +
+          '<header class="quote__head">' +
+            '<span class="quote__id" aria-hidden="true">' + q.id + "</span>" +
+            "<div>" +
+              '<h3 class="quote__name">' + s.supplier(q.id) + "</h3>" +
+              '<p class="quote__country">' + esc(q.country[lang]) + "</p>" +
+            "</div>" +
+            badge +
+          "</header>" +
+          '<dl class="calc">' +
+            "<div><dt>" + count(QTY, lang) + " × " + money(q.unitCents, lang, true) + "</dt><dd>" + money(q.goodsCents, lang) + "</dd></div>" +
+            "<div><dt>" + s.freight + "</dt><dd>+ " + money(q.freightCents, lang) + "</dd></div>" +
+            '<div class="calc__total"><dt>' + s.total + "</dt><dd>" + money(q.totalCents, lang) + "</dd></div>" +
+          "</dl>" +
+          '<p class="quote__unit">' + s.perBox(money(q.perBoxCents, lang, true)) + "</p>" +
+          '<ul class="facts">' + timing +
+            '<li class="fact"><span class="fact__mark" aria-hidden="true">·</span><span>' + s.pay(q.terms) + "</span></li>" +
+          "</ul>" +
+        "</article>"
+      );
+    }).join("");
+  }
+
+  function renderVerdict(deadline, result) {
+    var s = STR[lang];
+    var headline;
+    var reasons = [];
+
+    if (result.none) {
+      headline = s.noneHeadline(deadline);
+      reasons = [s.none1, s.none2(result.fastest.id, result.fastest.days), s.none3];
+    } else {
+      var rec = result.rec;
+      headline = s.headline(rec.id, money(rec.totalCents, lang));
+      reasons.push(result.onTime.length === 1 ? s.reasonOnly(deadline) : s.reasonLowest(deadline));
+
+      var others = QUOTES.filter(function (q) { return q.id !== rec.id; });
+      var onTimeOthers = others.filter(function (q) { return q.days <= deadline; }).sort(byCost);
+      // Least-late first: that is the alternative someone would realistically raise.
+      var lateOthers = others
+        .filter(function (q) { return q.days > deadline; })
+        .sort(function (a, b) { return a.days - b.days || a.totalCents - b.totalCents; });
+
+      onTimeOthers.forEach(function (q) {
+        var terms = rec.terms > q.terms ? s.termsBetter(rec.terms, q.terms) : "";
+        reasons.push(s.vsOnTime(q.id, money(q.totalCents - rec.totalCents, lang), terms));
+      });
+      lateOthers.forEach(function (q) {
+        var diff = rec.totalCents - q.totalCents;
+        reasons.push(diff > 0
+          ? s.vsLateCheaper(q.id, money(diff, lang), q.days - deadline)
+          : s.vsLateDearer(q.id, q.days - deadline));
+      });
+    }
+
+    verdictEl.innerHTML =
+      "<div>" +
+        '<p class="label">' + s.decision + "</p>" +
+        '<p class="verdict__headline">' + esc(headline) + "</p>" +
+      "</div>" +
+      '<ul class="verdict__reasons">' +
+        reasons.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") +
+      "</ul>";
+  }
+
+  function render() {
+    var deadline = parseInt(slider.value, 10);
+    var result = decide(deadline);
+    var s = STR[lang];
+    out.textContent = s.out(deadline);
+    slider.setAttribute("aria-valuetext", s.out(deadline));
+    updateChart(deadline, result);
+    renderQuotes(deadline, result);
+    renderVerdict(deadline, result);
+  }
+
+  /* ---------- language ---------- */
+  function setLang(next) {
+    lang = next === "fi" ? "fi" : "en";
+    page.setAttribute("data-lang", lang);
+    document.documentElement.lang = lang;
+    document.getElementById("langToggle").setAttribute(
+      "aria-label", lang === "fi" ? "Switch to English" : "Vaihda kieleksi suomi"
+    );
+    try { localStorage.setItem("assish.portfolio.lang", lang); } catch (e) { /* storage unavailable: fine */ }
+    render();
+  }
+
+  function initialLang() {
+    try {
+      var saved = localStorage.getItem("assish.portfolio.lang");
+      if (saved === "fi" || saved === "en") return saved;
+    } catch (e) { /* ignore */ }
+    var nav = (navigator.language || "").toLowerCase();
+    return nav.indexOf("fi") === 0 ? "fi" : "en";
+  }
+
+  /* ---------- optional contact block ---------- */
+  function renderContact() {
+    var box = document.getElementById("contact");
+    var links = [];
+    if (CONTACT.email) {
+      links.push('<a href="mailto:' + esc(CONTACT.email) + '">' + esc(CONTACT.email) + "</a>");
+    }
+    if (/^https:\/\/(www\.)?linkedin\.com\//i.test(CONTACT.linkedin)) {
+      links.push('<a href="' + esc(CONTACT.linkedin) + '" target="_blank" rel="noopener">LinkedIn ↗</a>');
+    }
+    box.innerHTML = links.join("");
+    box.hidden = links.length === 0;
+  }
+
+  /* ---------- start ---------- */
+  document.getElementById("procureflowLink").href = PROCUREFLOW_URL;
+  buildChart();
+  renderContact();
+  slider.addEventListener("input", render);
+  document.getElementById("langToggle").addEventListener("click", function () {
+    setLang(lang === "en" ? "fi" : "en");
+  });
+  setLang(initialLang());
+})();
+</script>
+</body>
+</html>

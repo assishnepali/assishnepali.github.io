@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProcureFlow &ndash; Procurement Portfolio Prototype</title>
+  <meta name="description" content="ProcureFlow is a fictional procurement portfolio prototype: purchasing requests, like-for-like quotation comparison, justified supplier decisions, purchase orders and goods receipts.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <div class="layout">
+
+    <!-- ============ SIDEBAR / NAVIGATION ============ -->
+    <header class="sidebar">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">PF</span>
+        <span class="brand__text">
+          <strong>ProcureFlow</strong>
+          <small>Procurement prototype</small>
+        </span>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav__link is-active" type="button" data-view="overview" aria-current="page">Overview</button>
+        <button class="nav__link" type="button" data-view="sourcing">Sourcing</button>
+        <button class="nav__link" type="button" data-view="orders">Purchase Orders</button>
+        <button class="nav__link" type="button" data-view="suppliers">Suppliers</button>
+        <button class="nav__link" type="button" data-view="about">About</button>
+      </nav>
+
+      <div class="sidebar__footer">
+        <p class="sidebar__byline">
+          An AI-assisted procurement portfolio prototype by <strong>Assish Sapkota</strong>.
+        </p>
+        <p class="sidebar__note">
+          All organisations and transactions are fictional.
+          Data is stored only in this browser, on this device.
+        </p>
+      </div>
+    </header>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <main class="main" id="main">
+
+      <!-- Messages raised while loading saved data -->
+      <div id="startupMessages" class="messages" role="status" aria-live="polite"></div>
+
+      <!-- ---------- VIEW: OVERVIEW ---------- -->
+      <section class="view" id="view-overview" aria-labelledby="overviewTitle">
+        <div class="page-head">
+          <div>
+            <h1 id="overviewTitle">Overview</h1>
+            <p class="page-head__sub">What needs following up, and where the open commitments are.</p>
+          </div>
+          <p class="page-head__date" id="todayLabel"></p>
+        </div>
+
+        <!-- Needs attention comes first, because it is the point of the screen -->
+        <section class="panel panel--attention" aria-labelledby="attentionTitle">
+          <div class="panel__head">
+            <h2 id="attentionTitle">Needs attention</h2>
+            <p class="panel__sub" id="attentionCount"></p>
+          </div>
+          <div id="attentionList" class="attention"></div>
+        </section>
+
+        <h2 class="section-title">Current position</h2>
+        <div class="kpi-grid">
+          <article class="kpi">
+            <p class="kpi__label">Open ordered POs</p>
+            <p class="kpi__value" id="kpiOpenOrders">0</p>
+            <p class="kpi__hint">Placed orders with a quantity still outstanding</p>
+          </article>
+
+          <article class="kpi">
+            <p class="kpi__label">Outstanding goods value</p>
+            <p class="kpi__value" id="kpiOutstandingValue">&euro;0.00</p>
+            <p class="kpi__hint">Remaining quantity &times; purchase order unit price, EUR excl. VAT</p>
+          </article>
+
+          <article class="kpi">
+            <p class="kpi__label">Overdue POs</p>
+            <p class="kpi__value" id="kpiOverdue">0</p>
+            <p class="kpi__hint">Quantity outstanding after the supplier-confirmed date</p>
+          </article>
+
+          <article class="kpi">
+            <p class="kpi__label">Requests awaiting a decision</p>
+            <p class="kpi__value" id="kpiAwaiting">0</p>
+            <p class="kpi__hint">Purchasing requests with no supplier chosen yet</p>
+          </article>
+        </div>
+
+        <div class="two-col">
+          <section class="panel" aria-labelledby="chartTitle">
+            <div class="panel__head">
+              <h2 id="chartTitle">Purchase order value by order month</h2>
+              <p class="panel__sub">
+                Total quoted cost of purchase orders placed in each month, by order date.
+                Includes Ordered, Partially received and Received. Excludes drafts and cancelled orders.
+                Last 6 months, EUR excl. VAT.
+              </p>
+            </div>
+            <div class="chart" id="orderChart"></div>
+            <p class="visually-hidden" id="orderChartText"></p>
+          </section>
+
+          <section class="panel" aria-labelledby="tryTitle">
+            <div class="panel__head">
+              <h2 id="tryTitle">Try the demo</h2>
+              <p class="panel__sub">Three steps through the whole purchasing workflow.</p>
+            </div>
+            <ol class="steps">
+              <li class="step">
+                <div class="step__body">
+                  <p class="step__title">1. Compare three like-for-like quotations</p>
+                  <p class="step__text">
+                    1,000 identical boxes needed in ten days. One supplier is cheapest but too slow.
+                  </p>
+                </div>
+                <button class="btn btn--secondary btn--sm" type="button" id="demoStep1">Open comparison</button>
+              </li>
+              <li class="step">
+                <div class="step__body">
+                  <p class="step__title">2. Record the decision and create the order</p>
+                  <p class="step__text">
+                    Choose a quotation, give a reason, and turn it into a purchase order without retyping.
+                  </p>
+                </div>
+                <button class="btn btn--secondary btn--sm" type="button" id="demoStep2">Go to orders</button>
+              </li>
+              <li class="step">
+                <div class="step__body">
+                  <p class="step__title">3. Record a part delivery</p>
+                  <p class="step__text">
+                    Receive some of the quantity and watch the outstanding balance and status follow.
+                  </p>
+                </div>
+                <button class="btn btn--secondary btn--sm" type="button" id="demoStep3">Open a part-received order</button>
+              </li>
+            </ol>
+          </section>
+        </div>
+      </section>
+
+      <!-- ---------- VIEW: SOURCING ---------- -->
+      <section class="view" id="view-sourcing" aria-labelledby="sourcingTitle" hidden>
+        <div class="page-head">
+          <div>
+            <h1 id="sourcingTitle">Sourcing</h1>
+            <p class="page-head__sub">A purchasing need, the quotations against it, and the recorded decision.</p>
+          </div>
+          <div class="page-head__actions">
+            <button class="btn btn--primary" type="button" id="newRequestBtn">+ New purchasing request</button>
+          </div>
+        </div>
+
+        <section class="panel" aria-labelledby="requestListTitle">
+          <div class="panel__head panel__head--row">
+            <h2 id="requestListTitle">Purchasing requests</h2>
+            <p class="panel__sub" id="requestCount"></p>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <caption class="visually-hidden">Purchasing requests with quantity, required date and decision status</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Reference</th>
+                  <th scope="col">Product</th>
+                  <th scope="col" class="num">Quantity</th>
+                  <th scope="col">Required by</th>
+                  <th scope="col">Quotations</th>
+                  <th scope="col">Status</th>
+                  <th scope="col"><span class="visually-hidden">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody id="requestTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Detail for the selected request -->
+        <div id="requestDetail" class="request-detail"></div>
+      </section>
+
+      <!-- ---------- VIEW: PURCHASE ORDERS ---------- -->
+      <section class="view" id="view-orders" aria-labelledby="ordersTitle" hidden>
+        <div class="page-head">
+          <div>
+            <h1 id="ordersTitle">Purchase Orders</h1>
+            <p class="page-head__sub">Placed orders, outstanding quantities and delivery follow-up.</p>
+          </div>
+          <div class="page-head__actions">
+            <button class="btn btn--ghost" type="button" id="exportCsvBtn">Export CSV</button>
+            <button class="btn btn--primary" type="button" id="newOrderBtn">+ New purchase order</button>
+          </div>
+        </div>
+
+        <div class="panel panel--tight">
+          <div class="filters">
+            <div class="field">
+              <label for="orderSearch">Search</label>
+              <input type="search" id="orderSearch" placeholder="PO reference, supplier or product">
+            </div>
+            <div class="field">
+              <label for="orderStatusFilter">Status</label>
+              <select id="orderStatusFilter">
+                <option value="all">All statuses</option>
+                <option value="Draft">Draft</option>
+                <option value="Ordered">Ordered</option>
+                <option value="Partially received">Partially received</option>
+                <option value="Received">Received</option>
+                <option value="Cancelled">Cancelled</option>
+                <option value="attention">Needs attention only</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="orderSupplierFilter">Supplier</label>
+              <select id="orderSupplierFilter">
+                <option value="all">All suppliers</option>
+              </select>
+            </div>
+            <div class="field field--end">
+              <button class="btn btn--ghost" type="button" id="clearFiltersBtn">Clear filters</button>
+            </div>
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="panel__head panel__head--row">
+            <h2>Orders</h2>
+            <p class="panel__sub" id="ordersCount"></p>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <caption class="visually-hidden">Purchase orders with ordered, received and outstanding quantities</caption>
+              <thead>
+                <tr>
+                  <th scope="col">PO reference</th>
+                  <th scope="col">Supplier</th>
+                  <th scope="col">Product</th>
+                  <th scope="col" class="num">Ordered</th>
+                  <th scope="col" class="num">Received</th>
+                  <th scope="col" class="num">Outstanding</th>
+                  <th scope="col">Required by</th>
+                  <th scope="col">Latest expected</th>
+                  <th scope="col">Status</th>
+                  <th scope="col"><span class="visually-hidden">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody"></tbody>
+            </table>
+          </div>
+          <p class="empty" id="ordersEmpty" hidden>No purchase orders match your search.</p>
+        </section>
+      </section>
+
+      <!-- ---------- VIEW: SUPPLIERS ---------- -->
+      <section class="view" id="view-suppliers" aria-labelledby="suppliersTitle" hidden>
+        <div class="page-head">
+          <div>
+            <h1 id="suppliersTitle">Suppliers</h1>
+            <p class="page-head__sub">Supplier records. Prices are only ever compared inside a single request.</p>
+          </div>
+          <div class="page-head__actions">
+            <button class="btn btn--primary" type="button" id="newSupplierBtn">+ Add supplier</button>
+          </div>
+        </div>
+
+        <p class="callout callout--info">
+          <strong>Why there is no supplier price league table.</strong>
+          Comparing a box supplier's unit price against a freight company's is meaningless.
+          Prices are compared only within a purchasing request, where the specification, quantity
+          and unit are identical. Use <strong>Sourcing</strong> to compare quotations.
+        </p>
+
+        <section class="panel">
+          <div class="panel__head panel__head--row">
+            <h2>Supplier list</h2>
+            <p class="panel__sub" id="suppliersCount"></p>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <caption class="visually-hidden">Suppliers with country, category, lead time, payment terms and usage</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Supplier</th>
+                  <th scope="col">Country</th>
+                  <th scope="col">Category</th>
+                  <th scope="col" class="num">Typical lead time</th>
+                  <th scope="col">Payment terms</th>
+                  <th scope="col" class="num">Quotations</th>
+                  <th scope="col" class="num">Orders</th>
+                  <th scope="col">State</th>
+                  <th scope="col"><span class="visually-hidden">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody id="suppliersTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ---------- VIEW: ABOUT ---------- -->
+      <section class="view" id="view-about" aria-labelledby="aboutTitle" hidden>
+        <div class="page-head">
+          <div>
+            <h1 id="aboutTitle">About this prototype</h1>
+            <p class="page-head__sub">What it does, what it does not do, and how it was built.</p>
+          </div>
+        </div>
+
+        <p class="callout callout--warning">
+          <strong>ProcureFlow &mdash; an AI-assisted procurement portfolio prototype by Assish Sapkota.</strong>
+          All organisations and transactions are fictional.
+        </p>
+
+        <div class="prose">
+          <h2>The purchasing problem</h2>
+          <p>
+            A buyer receives a need, asks several suppliers for prices, and then has to choose one.
+            The choice is rarely just the lowest unit price: freight, minimum order quantities,
+            quotation validity, payment terms and above all the delivery date change the answer.
+            The difficult part is not the arithmetic, it is being able to show later
+            <em>why</em> a supplier was chosen, and what still needs chasing after the order was placed.
+          </p>
+
+          <h2>The intended user</h2>
+          <p>
+            A junior buyer or purchasing assistant handling routine repeat purchases: packaging,
+            consumables, components. One person, one product per request, no approval hierarchy.
+          </p>
+
+          <h2>How the workflow supports the decision</h2>
+          <ol>
+            <li><strong>Request</strong> &mdash; the need is written down once: specification, quantity, unit, required date, location.</li>
+            <li><strong>Quotations</strong> &mdash; each quotation belongs to that request, so only identical specifications, quantities and units are ever compared.</li>
+            <li><strong>Comparison</strong> &mdash; every quotation is costed the same way and anything that makes it unusable is shown, not hidden.</li>
+            <li><strong>Decision</strong> &mdash; the buyer records which quotation was chosen and why. Overriding the lowest-cost option, or accepting a late delivery, requires a written reason.</li>
+            <li><strong>Purchase order</strong> &mdash; created from the chosen quotation, with a frozen snapshot of the price, terms and reasoning.</li>
+            <li><strong>Receipts</strong> &mdash; deliveries are recorded as they arrive, so the outstanding quantity and the status are always calculated, never typed.</li>
+          </ol>
+
+          <h2>The formulas, and their limits</h2>
+          <p class="formula">
+            Total quoted cost = quantity &times; unit price + freight + other charges &minus; discount<br>
+            Effective unit cost = total quoted cost &divide; quantity<br>
+            Outstanding quantity = quantity ordered &minus; sum of recorded receipts<br>
+            Outstanding goods value = outstanding quantity &times; purchase order unit price
+          </p>
+          <p><strong>What these formulas deliberately do not include:</strong></p>
+          <ul>
+            <li>No VAT and no tax handling. Every figure is EUR excluding VAT.</li>
+            <li>No currency conversion. This version is EUR only.</li>
+            <li>No cost of capital, so longer payment terms are shown as a fact, not converted into money.</li>
+            <li>No stock-out cost, so "late" is flagged but never priced.</li>
+            <li>No quality history, supplier risk or total cost of ownership.</li>
+            <li>No weighted scoring. A weighted score would hide the judgement inside invented numbers.</li>
+          </ul>
+          <p>
+            This means the recommendation answers one narrow question: <em>which compliant quotation
+            that can arrive in time has the lowest total quoted cost?</em> Everything else is left to the buyer,
+            which is why a written reason is required to depart from it.
+          </p>
+
+          <h2>Functional versus simulated</h2>
+          <table class="table table--plain">
+            <caption class="visually-hidden">Which parts of ProcureFlow are functional and which are simulated</caption>
+            <thead>
+              <tr><th scope="col">Area</th><th scope="col">Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Requests, quotations, comparison arithmetic, decisions</td><td><span class="badge badge--ok">Functional</span></td></tr>
+              <tr><td>Purchase orders, receipts, outstanding quantities, statuses</td><td><span class="badge badge--ok">Functional</span></td></tr>
+              <tr><td>CSV export, JSON backup and restore, local activity history</td><td><span class="badge badge--ok">Functional</span></td></tr>
+              <tr><td>Sending a purchase order to a supplier</td><td><span class="badge badge--sim">Simulated</span> &mdash; "Ordered" is a status someone sets by hand. Nothing is emailed or transmitted.</td></tr>
+              <tr><td>Supplier confirmations and delivery updates</td><td><span class="badge badge--sim">Simulated</span> &mdash; typed in by the buyer, not received from a supplier system.</td></tr>
+              <tr><td>Users, permissions, approvals</td><td><span class="badge badge--no">Not present</span> &mdash; single user, no login.</td></tr>
+              <tr><td>Invoice matching, forecasting, ERP integration</td><td><span class="badge badge--no">Not present</span></td></tr>
+            </tbody>
+          </table>
+
+          <h2>Why localStorage is only suitable for a demonstration</h2>
+          <ul>
+            <li>Data is saved in <strong>one browser on one device</strong>. It does not follow you to your phone or another browser.</li>
+            <li>Clearing browsing data, or using a private window, removes it.</li>
+            <li>Two people cannot work on the same records, and there is no server backup.</li>
+            <li>Anyone using the browser can edit the stored data directly, so the change history is a
+              <strong>local activity history</strong> for convenience &mdash; not a secure audit trail and not evidence.</li>
+          </ul>
+          <p>Use <strong>Backup to JSON</strong> before clearing your browser, and <strong>Restore</strong> to bring the records back.</p>
+
+          <h2>My contribution, and the role of AI assistance</h2>
+          <p>
+            I defined the purchasing problem, the workflow and the rules this prototype follows: what makes
+            a quotation comparable, why lateness must not be hidden inside a score, which figures belong on
+            the first screen, and what a buyer needs to see after an order is placed. I specified the
+            scenario and the expected results, reviewed the behaviour against them and directed the changes.
+          </p>
+          <p>
+            The code was written with AI assistance (Claude). I am not claiming I wrote every line unaided,
+            that this has been formally tested, that it produced business savings, that I have SAP
+            experience, or that anyone uses it. It is a learning and demonstration project.
+          </p>
+
+          <h2>Two-minute demonstration</h2>
+          <ol>
+            <li><strong>Overview (15s)</strong> &mdash; "Everything needing action is at the top: an overdue order with 250 units outstanding, and requests waiting for a decision."</li>
+            <li><strong>Sourcing, REQ-2026-0001 (45s)</strong> &mdash; "1,000 identical boxes in ten days. Three quotations, same specification. Baltic Kraft is cheapest at &euro;1,050 but delivers in fifteen days, so it misses the deadline. Vermeer at &euro;1,180 is the cheapest that arrives in time &mdash; &euro;70 less than Lahtinen and &euro;130 more than Baltic Kraft."</li>
+            <li><strong>Decision (20s)</strong> &mdash; "I record the choice and the reason. If I pick a different supplier or accept a late delivery, the app makes me write why."</li>
+            <li><strong>Purchase order (20s)</strong> &mdash; "The order is created from the quotation, keeping a snapshot of the price and reasoning, so editing the supplier later cannot rewrite the decision."</li>
+            <li><strong>Receipt (20s)</strong> &mdash; "600 of 1,000 arrive, 400 outstanding, status becomes Partially received automatically. The original promised date is kept, so lateness is not erased."</li>
+          </ol>
+
+          <h2>Five questions I should be able to answer</h2>
+          <ol>
+            <li>Why is the cheapest quotation not automatically the right one here, and what would change your answer?</li>
+            <li>How is total quoted cost calculated, and what does it deliberately leave out?</li>
+            <li>What makes two quotations comparable, and what do you do with one that is not?</li>
+            <li>Why keep the original supplier-confirmed date when a new expected date arrives?</li>
+            <li>Why is a written reason required to override the suggested quotation or accept a late delivery?</li>
+          </ol>
+        </div>
+
+        <section class="panel" aria-labelledby="dataTitle">
+          <div class="panel__head">
+            <h2 id="dataTitle">Your data</h2>
+            <p class="panel__sub">Stored in this browser only. Nothing is uploaded anywhere.</p>
+          </div>
+          <div class="button-row">
+            <button class="btn btn--ghost" type="button" id="backupBtn">Backup to JSON</button>
+            <button class="btn btn--ghost" type="button" id="restoreBtn">Restore from JSON</button>
+            <button class="btn btn--danger" type="button" id="resetDemoBtn">Reset demo data</button>
+          </div>
+          <input type="file" id="restoreInput" accept="application/json,.json" aria-label="Choose a ProcureFlow JSON backup file to restore" hidden>
+
+          <h3 class="subhead">Local activity history</h3>
+          <p class="hint">A convenience log kept in this browser. Not a secure audit trail.</p>
+          <ul class="activity" id="activityList"></ul>
+        </section>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ============ DIALOG: PURCHASING REQUEST ============ -->
+  <dialog class="modal" id="requestDialog" aria-labelledby="requestDialogTitle">
+    <form id="requestForm" novalidate>
+      <div class="modal__head">
+        <h2 id="requestDialogTitle">New purchasing request</h2>
+        <button class="icon-btn" type="button" data-close-dialog aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body">
+        <div class="form-grid">
+          <div class="field field--wide">
+            <label for="reqProduct">Product name <span class="req">*</span></label>
+            <input type="text" id="reqProduct" required aria-describedby="reqProductErr">
+            <p class="error" id="reqProductErr" role="alert"></p>
+          </div>
+          <div class="field field--wide">
+            <label for="reqSpec">Specification <span class="req">*</span></label>
+            <textarea id="reqSpec" rows="3" required aria-describedby="reqSpecErr"></textarea>
+            <p class="hint">Everything a supplier needs to quote the same thing. This is what makes quotations comparable.</p>
+            <p class="error" id="reqSpecErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="reqQuantity">Quantity <span class="req">*</span></label>
+            <input type="number" id="reqQuantity" min="1" step="any" required aria-describedby="reqQuantityErr">
+            <p class="error" id="reqQuantityErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="reqUnit">Unit of measure <span class="req">*</span></label>
+            <input type="text" id="reqUnit" list="unitList" required aria-describedby="reqUnitErr">
+            <datalist id="unitList">
+              <option value="pcs"></option><option value="pairs"></option><option value="rolls"></option>
+              <option value="boxes"></option><option value="kg"></option><option value="m"></option>
+              <option value="litres"></option><option value="pallets"></option>
+            </datalist>
+            <p class="error" id="reqUnitErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="reqRequiredDate">Required delivery date <span class="req">*</span></label>
+            <input type="date" id="reqRequiredDate" required aria-describedby="reqRequiredDateErr">
+            <p class="error" id="reqRequiredDateErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="reqBudget">Budget (EUR, optional)</label>
+            <input type="number" id="reqBudget" min="0" step="0.01">
+            <p class="hint">Excluding VAT. Leave empty if there is no budget.</p>
+          </div>
+          <div class="field field--wide">
+            <label for="reqLocation">Delivery location <span class="req">*</span></label>
+            <input type="text" id="reqLocation" required aria-describedby="reqLocationErr">
+            <p class="error" id="reqLocationErr" role="alert"></p>
+          </div>
+          <div class="field field--wide">
+            <label for="reqNotes">Buyer notes</label>
+            <textarea id="reqNotes" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <button class="btn btn--ghost" type="button" data-close-dialog>Cancel</button>
+        <button class="btn btn--primary" type="submit">Save request</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ DIALOG: QUOTATION ============ -->
+  <dialog class="modal modal--wide" id="quotationDialog" aria-labelledby="quotationDialogTitle">
+    <form id="quotationForm" novalidate>
+      <div class="modal__head">
+        <h2 id="quotationDialogTitle">Add quotation</h2>
+        <button class="icon-btn" type="button" data-close-dialog aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body">
+        <p class="callout callout--info" id="quoteRequestContext"></p>
+        <div class="form-grid">
+          <div class="field">
+            <label for="quoSupplier">Supplier <span class="req">*</span></label>
+            <select id="quoSupplier" required aria-describedby="quoSupplierErr">
+              <option value="">Select a supplier</option>
+            </select>
+            <p class="error" id="quoSupplierErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="quoCompliant">Specification compliance <span class="req">*</span></label>
+            <select id="quoCompliant">
+              <option value="yes">Supplier confirmed the requested specification</option>
+              <option value="no">Supplier offered something different</option>
+            </select>
+          </div>
+          <div class="field field--wide">
+            <label for="quoSpec">Quoted product / specification <span class="req">*</span></label>
+            <textarea id="quoSpec" rows="2" required aria-describedby="quoSpecErr"></textarea>
+            <p class="error" id="quoSpecErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="quoQuantity">Quantity quoted <span class="req">*</span></label>
+            <input type="number" id="quoQuantity" min="0" step="any" required aria-describedby="quoQuantityErr">
+            <p class="error" id="quoQuantityErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="quoUnit">Unit <span class="req">*</span></label>
+            <input type="text" id="quoUnit" list="unitList" required aria-describedby="quoUnitErr">
+            <p class="error" id="quoUnitErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="quoUnitPrice">Unit price, EUR excl. VAT <span class="req">*</span></label>
+            <input type="number" id="quoUnitPrice" min="0" step="0.0001" required aria-describedby="quoUnitPriceErr">
+            <p class="error" id="quoUnitPriceErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="quoFreight">Freight, EUR <span class="req">*</span></label>
+            <input type="number" id="quoFreight" min="0" step="0.01" required aria-describedby="quoFreightErr">
+            <p class="hint">Enter 0 if freight is included. Leaving it empty marks the quotation incomplete.</p>
+            <p class="error" id="quoFreightErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="quoOther">Other charges, EUR <span class="req">*</span></label>
+            <input type="number" id="quoOther" min="0" step="0.01" required aria-describedby="quoOtherErr">
+            <p class="hint">Tooling, packaging, surcharges. Enter 0 if none.</p>
+            <p class="error" id="quoOtherErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="quoDiscount">Fixed discount, EUR <span class="req">*</span></label>
+            <input type="number" id="quoDiscount" min="0" step="0.01" required aria-describedby="quoDiscountErr">
+            <p class="hint">A monetary amount, not a percentage. Enter 0 if none.</p>
+            <p class="error" id="quoDiscountErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="quoDelivery">Earliest delivery date <span class="req">*</span></label>
+            <input type="date" id="quoDelivery" required aria-describedby="quoDeliveryErr">
+            <p class="error" id="quoDeliveryErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="quoValidUntil">Quote valid until</label>
+            <input type="date" id="quoValidUntil">
+            <p class="hint">Leave empty if the supplier did not state a validity date.</p>
+          </div>
+          <div class="field">
+            <label for="quoMinOrder">Minimum order quantity</label>
+            <input type="number" id="quoMinOrder" min="0" step="any">
+          </div>
+          <div class="field">
+            <label for="quoPaymentTerms">Payment terms (days)</label>
+            <input type="number" id="quoPaymentTerms" min="0" step="1">
+          </div>
+          <div class="field field--wide">
+            <label for="quoNotes">Notes</label>
+            <textarea id="quoNotes" rows="2"></textarea>
+          </div>
+        </div>
+
+        <div class="calc-preview" id="quotePreview" aria-live="polite"></div>
+      </div>
+      <div class="modal__foot">
+        <button class="btn btn--ghost" type="button" data-close-dialog>Cancel</button>
+        <button class="btn btn--primary" type="submit">Save quotation</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ DIALOG: DECISION ============ -->
+  <dialog class="modal" id="decisionDialog" aria-labelledby="decisionDialogTitle">
+    <form id="decisionForm" novalidate>
+      <div class="modal__head">
+        <h2 id="decisionDialogTitle">Record supplier decision</h2>
+        <button class="icon-btn" type="button" data-close-dialog aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body">
+        <div id="decisionContext"></div>
+        <div class="field">
+          <label for="decRationale">Reason for this choice <span class="req" id="decRationaleReq" hidden>*</span></label>
+          <textarea id="decRationale" rows="4" aria-describedby="decRationaleErr"></textarea>
+          <p class="hint" id="decRationaleHint"></p>
+          <p class="error" id="decRationaleErr" role="alert"></p>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <button class="btn btn--ghost" type="button" data-close-dialog>Cancel</button>
+        <button class="btn btn--primary" type="submit">Record decision</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ DIALOG: PURCHASE ORDER ============ -->
+  <dialog class="modal" id="orderDialog" aria-labelledby="orderDialogTitle">
+    <form id="orderForm" novalidate>
+      <div class="modal__head">
+        <h2 id="orderDialogTitle">New purchase order</h2>
+        <button class="icon-btn" type="button" data-close-dialog aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body">
+        <div id="orderFormContext"></div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="poReference">PO reference <span class="req">*</span></label>
+            <input type="text" id="poReference" required aria-describedby="poReferenceErr">
+            <p class="error" id="poReferenceErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="poOrderDate">Order date <span class="req">*</span></label>
+            <input type="date" id="poOrderDate" required aria-describedby="poOrderDateErr">
+            <p class="error" id="poOrderDateErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="poRequiredDate">Required delivery date <span class="req">*</span></label>
+            <input type="date" id="poRequiredDate" required aria-describedby="poRequiredDateErr">
+            <p class="error" id="poRequiredDateErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="poConfirmedDate">Supplier-confirmed delivery date</label>
+            <input type="date" id="poConfirmedDate">
+            <p class="hint">Leave empty if the supplier has not confirmed yet. This date is never overwritten later.</p>
+          </div>
+          <div class="field">
+            <label for="poStatus">Status</label>
+            <select id="poStatus">
+              <option value="Draft">Draft</option>
+              <option value="Ordered">Ordered (recorded manually)</option>
+            </select>
+            <p class="hint">Nothing is emailed. "Ordered" only records that you placed it.</p>
+          </div>
+          <div class="field">
+            <label for="poFollowUpDate">Next follow-up date</label>
+            <input type="date" id="poFollowUpDate">
+          </div>
+          <div class="field field--wide">
+            <label for="poNotes">Follow-up notes</label>
+            <textarea id="poNotes" rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- Only shown when creating an order without a quotation -->
+        <div id="manualOrderFields" hidden>
+          <h3 class="subhead">Order details</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label for="poSupplier">Supplier <span class="req">*</span></label>
+              <select id="poSupplier" aria-describedby="poSupplierErr">
+                <option value="">Select a supplier</option>
+              </select>
+              <p class="error" id="poSupplierErr" role="alert"></p>
+            </div>
+            <div class="field">
+              <label for="poProduct">Product <span class="req">*</span></label>
+              <input type="text" id="poProduct" aria-describedby="poProductErr">
+              <p class="error" id="poProductErr" role="alert"></p>
+            </div>
+            <div class="field">
+              <label for="poQuantity">Quantity <span class="req">*</span></label>
+              <input type="number" id="poQuantity" min="1" step="any" aria-describedby="poQuantityErr">
+              <p class="error" id="poQuantityErr" role="alert"></p>
+            </div>
+            <div class="field">
+              <label for="poUnit">Unit <span class="req">*</span></label>
+              <input type="text" id="poUnit" list="unitList" aria-describedby="poUnitErr">
+              <p class="error" id="poUnitErr" role="alert"></p>
+            </div>
+            <div class="field">
+              <label for="poUnitPrice">Unit price, EUR excl. VAT <span class="req">*</span></label>
+              <input type="number" id="poUnitPrice" min="0" step="0.0001" aria-describedby="poUnitPriceErr">
+              <p class="error" id="poUnitPriceErr" role="alert"></p>
+            </div>
+            <div class="field">
+              <label for="poFreight">Freight, EUR <span class="req">*</span></label>
+              <input type="number" id="poFreight" min="0" step="0.01" aria-describedby="poFreightErr">
+              <p class="error" id="poFreightErr" role="alert"></p>
+            </div>
+            <div class="field">
+              <label for="poPaymentTerms">Payment terms (days)</label>
+              <input type="number" id="poPaymentTerms" min="0" step="1">
+            </div>
+            <div class="field">
+              <label for="poTotalPreview">Total quoted cost</label>
+              <output class="total-output" id="poTotalPreview">&euro;0.00</output>
+              <p class="hint">Quantity &times; unit price + freight</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <button class="btn btn--ghost" type="button" data-close-dialog>Cancel</button>
+        <button class="btn btn--primary" type="submit">Save purchase order</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ DIALOG: PURCHASE ORDER DETAIL ============ -->
+  <dialog class="modal modal--wide" id="poDetailDialog" aria-labelledby="poDetailTitle">
+    <div class="modal__head">
+      <h2 id="poDetailTitle">Purchase order</h2>
+      <button class="icon-btn" type="button" data-close-dialog aria-label="Close">&times;</button>
+    </div>
+    <div class="modal__body" id="poDetailBody"></div>
+    <div class="modal__foot">
+      <button class="btn btn--ghost" type="button" id="poPrintBtn">Print / Save as PDF</button>
+      <button class="btn btn--ghost" type="button" data-close-dialog>Close</button>
+      <button class="btn btn--secondary" type="button" id="poFollowUpBtn">Add follow-up</button>
+      <button class="btn btn--primary" type="button" id="poReceiveBtn">Record receipt</button>
+    </div>
+  </dialog>
+
+  <!-- ============ DIALOG: GOODS RECEIPT ============ -->
+  <dialog class="modal" id="receiptDialog" aria-labelledby="receiptDialogTitle">
+    <form id="receiptForm" novalidate>
+      <div class="modal__head">
+        <h2 id="receiptDialogTitle">Record goods receipt</h2>
+        <button class="icon-btn" type="button" data-close-dialog aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body">
+        <div id="receiptContext"></div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="recDate">Receipt date <span class="req">*</span></label>
+            <input type="date" id="recDate" required aria-describedby="recDateErr">
+            <p class="error" id="recDateErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="recQuantity">Quantity received <span class="req">*</span></label>
+            <input type="number" id="recQuantity" min="0" step="any" required aria-describedby="recQuantityErr">
+            <p class="error" id="recQuantityErr" role="alert"></p>
+          </div>
+          <div class="field field--wide">
+            <label for="recNotes">Notes</label>
+            <textarea id="recNotes" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <button class="btn btn--ghost" type="button" data-close-dialog>Cancel</button>
+        <button class="btn btn--primary" type="submit">Save receipt</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ DIALOG: FOLLOW-UP ============ -->
+  <dialog class="modal" id="followUpDialog" aria-labelledby="followUpDialogTitle">
+    <form id="followUpForm" novalidate>
+      <div class="modal__head">
+        <h2 id="followUpDialogTitle">Add follow-up</h2>
+        <button class="icon-btn" type="button" data-close-dialog aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body">
+        <div id="followUpContext"></div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="fuDate">Date of this follow-up <span class="req">*</span></label>
+            <input type="date" id="fuDate" required aria-describedby="fuDateErr">
+            <p class="error" id="fuDateErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="fuNextDate">Next follow-up date</label>
+            <input type="date" id="fuNextDate">
+          </div>
+          <div class="field field--wide">
+            <label for="fuNote">What happened <span class="req">*</span></label>
+            <textarea id="fuNote" rows="3" required aria-describedby="fuNoteErr"></textarea>
+            <p class="error" id="fuNoteErr" role="alert"></p>
+          </div>
+          <div class="field field--wide">
+            <label for="fuNewExpected">New latest expected delivery date</label>
+            <input type="date" id="fuNewExpected">
+            <p class="hint">
+              This updates the latest expectation only. The original supplier-confirmed date is kept,
+              so past lateness is never erased.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <button class="btn btn--ghost" type="button" data-close-dialog>Cancel</button>
+        <button class="btn btn--primary" type="submit">Save follow-up</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ DIALOG: SUPPLIER ============ -->
+  <dialog class="modal" id="supplierDialog" aria-labelledby="supplierDialogTitle">
+    <form id="supplierForm" novalidate>
+      <div class="modal__head">
+        <h2 id="supplierDialogTitle">Add supplier</h2>
+        <button class="icon-btn" type="button" data-close-dialog aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body">
+        <div class="form-grid">
+          <div class="field field--wide">
+            <label for="supName">Supplier name <span class="req">*</span></label>
+            <input type="text" id="supName" required aria-describedby="supNameErr">
+            <p class="error" id="supNameErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="supCountry">Country <span class="req">*</span></label>
+            <input type="text" id="supCountry" list="countryList" required aria-describedby="supCountryErr">
+            <datalist id="countryList">
+              <option value="Finland"></option><option value="Sweden"></option><option value="Germany"></option>
+              <option value="Netherlands"></option><option value="Belgium"></option><option value="Estonia"></option>
+              <option value="Denmark"></option><option value="Poland"></option>
+            </datalist>
+            <p class="error" id="supCountryErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="supCategory">Product category <span class="req">*</span></label>
+            <input type="text" id="supCategory" list="categoryList" required aria-describedby="supCategoryErr">
+            <datalist id="categoryList"></datalist>
+            <p class="error" id="supCategoryErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="supLead">Typical lead time (days)</label>
+            <input type="number" id="supLead" min="0" step="1">
+            <p class="hint">Background information only. Real comparison uses quotation dates.</p>
+          </div>
+          <div class="field">
+            <label for="supTerms">Usual payment terms</label>
+            <select id="supTerms">
+              <option value="Net 14">Net 14</option>
+              <option value="Net 30" selected>Net 30</option>
+              <option value="Net 45">Net 45</option>
+              <option value="Net 60">Net 60</option>
+              <option value="Prepayment">Prepayment</option>
+            </select>
+          </div>
+          <div class="field field--wide">
+            <label for="supNotes">Notes</label>
+            <textarea id="supNotes" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <button class="btn btn--ghost" type="button" data-close-dialog>Cancel</button>
+        <button class="btn btn--primary" type="submit">Save supplier</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ DIALOG: CONFIRM ============ -->
+  <dialog class="modal modal--narrow" id="confirmDialog" aria-labelledby="confirmTitle">
+    <div class="modal__head">
+      <h2 id="confirmTitle">Please confirm</h2>
+      <button class="icon-btn" type="button" data-close-dialog aria-label="Close">&times;</button>
+    </div>
+    <div class="modal__body" id="confirmBody"></div>
+    <div class="modal__foot">
+      <button class="btn btn--ghost" type="button" data-close-dialog>Cancel</button>
+      <button class="btn btn--danger" type="button" id="confirmOkBtn">Confirm</button>
+    </div>
+  </dialog>
+
+  <!-- Printable purchase order, filled in just before printing -->
+  <div id="printArea" aria-hidden="true"></div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/logic.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
