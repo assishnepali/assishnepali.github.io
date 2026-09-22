@@ -276,7 +276,7 @@ p { margin: 0; }
 .step__text { font-size: 0.85rem; color: var(--ink-600); }
 
 /* ---------- 4. TABLES ---------- */
-.table-wrap { overflow-x: auto; }
+.table-wrap { overflow-x: auto; position: relative; }  /* relative: keeps hidden screen-reader text from widening the page */
 .table {
   width: 100%; border-collapse: collapse;
   font-size: 0.875rem;            /* 14px functional table text */
@@ -529,6 +529,152 @@ p { margin: 0; }
 
 #printArea { display: none; }
 
+/* ---------- 7. INTRO AND GUIDED TOUR ----------
+   The intro greets a first-time visitor on the Overview; the tour
+   card walks through the real screens (see js/tour.js). */
+.intro {
+  position: relative;
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(43, 116, 232, 0.28), transparent 55%),
+    linear-gradient(135deg, var(--navy-800), var(--navy-700));
+  color: #e9f0f8;
+  border-radius: 14px;
+  padding: 24px 28px 20px;
+  margin-bottom: 26px;
+  box-shadow: var(--shadow-md);
+}
+.intro[hidden] { display: none; }
+.intro__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.intro__eyebrow {
+  font-size: 0.78rem; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; color: #8fb4ea;
+}
+.intro__tools { display: flex; align-items: center; gap: 10px; }
+.lang { display: inline-flex; background: rgba(255, 255, 255, 0.08); border-radius: 999px; padding: 3px; }
+.lang__btn {
+  border: 0; background: transparent; color: #b9cbe2; font: inherit; font-size: 0.78rem; font-weight: 650;
+  padding: 4px 11px; border-radius: 999px; cursor: pointer;
+}
+.lang__btn[aria-pressed="true"] { background: #fff; color: var(--navy-800); }
+.intro__close {
+  width: 30px; height: 30px; border-radius: 50%; border: 0; cursor: pointer;
+  background: rgba(255, 255, 255, 0.08); color: #c9d7e8; font-size: 1.2rem; line-height: 1;
+}
+.intro__close:hover, .lang__btn:hover:not([aria-pressed="true"]) { background: rgba(255, 255, 255, 0.16); color: #fff; }
+.intro__title { font-size: 1.7rem; color: #fff; margin: 10px 0 8px; letter-spacing: -0.02em; }
+.intro__text { max-width: 68ch; color: #cbd8e8; font-size: 0.98rem; }
+.intro__points {
+  list-style: none; padding: 0; margin: 16px 0 18px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.intro__points li {
+  background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9px; padding: 10px 12px 10px 36px; position: relative;
+  font-size: 0.9rem; font-weight: 600; color: #f1f5fa; line-height: 1.35;
+}
+.intro__points li::before {
+  content: ""; position: absolute; left: 13px; top: 13px; width: 13px; height: 7px;
+  border-left: 2.5px solid #5fd3a4; border-bottom: 2.5px solid #5fd3a4; transform: rotate(-45deg);
+}
+.intro__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.intro__play { font-size: 1rem; padding: 12px 20px; gap: 10px; display: inline-flex; align-items: center; }
+.intro .btn--ghost { background: transparent; color: #e3ecf7; border-color: rgba(255, 255, 255, 0.28); }
+.intro .btn--ghost:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+.intro__foot {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px;
+  margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.8rem; color: #9fb3cb;
+}
+.intro__links { display: inline-flex; gap: 14px; }
+.intro__links a, .tour-card__contact a { color: #fff; font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.35); }
+.intro__links a:hover { border-bottom-color: #fff; }
+
+.play {
+  width: 0; height: 0; border-style: solid; border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent currentColor; display: inline-block;
+}
+
+.tour-launch {
+  display: flex; align-items: center; gap: 9px; width: 100%;
+  margin-top: 14px; padding: 10px 12px; border-radius: var(--radius-sm);
+  background: rgba(95, 211, 164, 0.12); border: 1px solid rgba(95, 211, 164, 0.35);
+  color: #d9f5ea; font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+}
+.tour-launch:hover { background: rgba(95, 211, 164, 0.22); color: #fff; }
+.tour-launch .play { border-width: 5px 0 5px 8px; }
+
+/* Highlighted element during the tour */
+.tour-focus {
+  position: relative;
+  outline: 3px solid var(--blue-500) !important;
+  outline-offset: 5px;
+  border-radius: var(--radius);
+  animation: tour-pulse 1.6s ease-out 2;
+  scroll-margin: 90px;
+}
+@keyframes tour-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(43, 116, 232, 0.45); }
+  100% { box-shadow: 0 0 0 16px rgba(43, 116, 232, 0); }
+}
+
+.tour-card {
+  position: fixed; right: 24px; bottom: 24px; z-index: 200;
+  width: min(390px, calc(100vw - 32px));
+  background: var(--navy-800); color: #dbe6f3;
+  border-radius: 14px; padding: 16px 18px 16px;
+  box-shadow: 0 18px 50px rgba(10, 25, 41, 0.45);
+  animation: tour-in 0.22s ease-out;
+}
+.tour-card--final {
+  right: 50%; bottom: 50%; transform: translate(50%, 50%);
+  width: min(460px, calc(100vw - 32px)); padding: 22px 24px 20px;
+}
+@keyframes tour-in { from { opacity: 0; translate: 0 10px; } to { opacity: 1; translate: 0 0; } }
+.tour-card__top { display: flex; align-items: center; gap: 10px; }
+.tour-card__count { font-size: 0.75rem; font-weight: 650; color: #8fb4ea; white-space: nowrap; }
+.tour-card__bar { flex: 1; height: 4px; background: rgba(255, 255, 255, 0.12); border-radius: 4px; overflow: hidden; }
+.tour-card__bar span { display: block; height: 100%; background: #5fd3a4; border-radius: 4px; transition: width 0.3s; }
+.tour-card__x {
+  border: 0; background: transparent; color: #9fb3cb; font-size: 1.3rem; line-height: 1;
+  cursor: pointer; padding: 2px 4px; border-radius: 6px;
+}
+.tour-card__x:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+.tour-card__title { color: #fff; font-size: 1.12rem; margin: 10px 0 6px; }
+.tour-card--final .tour-card__title { font-size: 1.35rem; }
+.tour-card__text { font-size: 0.93rem; line-height: 1.55; }
+.tour-card__contact {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px;
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.12); font-size: 0.9rem;
+}
+.tour-card__contact strong { color: #fff; margin-right: 4px; }
+.tour-card__nav { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+.tour-card .btn--ghost { background: transparent; color: #dbe6f3; border-color: rgba(255, 255, 255, 0.28); }
+.tour-card .btn--ghost:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+.is-touring .toast { bottom: auto; top: 20px; }
+
+@media (max-width: 1150px) {
+  .intro__points { grid-template-columns: 1fr; gap: 6px; }
+}
+/* Wide screens: the tour card is docked on the right and the page
+   makes room for it, so it never covers what it is talking about. */
+@media (min-width: 1100px) {
+  .is-touring .main { padding-right: 440px; }
+  .tour-card { top: 50%; bottom: auto; right: 24px; transform: translateY(-50%); width: 390px; }
+  .tour-card--final { right: 24px; top: 50%; transform: translateY(-50%); width: 390px; }
+  .is-touring .modal { margin: auto 440px auto 24px; width: auto; }
+  .tour-focus { scroll-margin: 28px; }
+}
+@media (max-width: 860px) {
+  .intro { padding: 18px 18px 16px; border-radius: 12px; }
+  .intro__title { font-size: 1.35rem; }
+  .intro__actions .btn { flex: 1 1 100%; justify-content: center; }
+  .tour-launch { margin-top: 10px; justify-content: center; }
+  .tour-card, .tour-card--final {
+    left: 8px; right: 8px; bottom: 8px; top: auto; transform: none;
+    width: auto; padding: 14px 16px;
+  }
+  .tour-focus { scroll-margin: 16px; }
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 1150px) {
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
@@ -573,7 +719,7 @@ p { margin: 0; }
    #printArea, so "Print / Save as PDF" produces a clean document. */
 @media print {
   body { background: #fff; font-size: 12pt; }
-  .layout, .toast, dialog, .modal { display: none !important; }
+  .layout, .toast, dialog, .modal, .tour-card { display: none !important; }
   #printArea { display: block; padding: 0; }
   .print-doc { max-width: 100%; }
   .print-doc h1 { font-size: 20pt; margin-bottom: 4pt; }
@@ -584,3 +730,31 @@ p { margin: 0; }
   .print-doc .num { text-align: right; }
   .print-doc .print-footer { font-size: 9pt; color: #555; border-top: 1px solid #999; padding-top: 8pt; }
 }
+
+/* ---------- 8. PHONE NAVIGATION ----------
+   On a phone the menu is one scrollable row, so the intro and the
+   content are visible straight away instead of below a tall menu. */
+@media (max-width: 860px) {
+  .sidebar { padding: 12px 12px 10px; }
+  .brand { padding: 0 4px 10px; }
+  .nav {
+    display: flex; flex-direction: row; gap: 6px;
+    overflow-x: auto; scrollbar-width: none; margin: 0 -12px; padding: 0 12px;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav__link { flex: 0 0 auto; width: auto; padding: 8px 13px; font-size: 0.86rem; }
+  .tour-launch { margin-top: 8px; padding: 8px 12px; }
+  .sidebar__footer { margin-top: 8px; }
+  .sidebar__byline { display: none; }
+  .sidebar__note { font-size: 0.72rem; padding-top: 6px; }
+}
+
+/* Grid and chart columns may shrink below their content width, so a
+   long euro figure cannot push the page wider than a phone screen. */
+.two-col > *, .kpi-grid > *, .chart__col { min-width: 0; }
+@media (max-width: 560px) {
+  .chart { gap: 4px; }
+  .chart__value { font-size: 0.6rem; letter-spacing: -0.02em; }
+}
+/* Long "Select supplier (price, days late)" buttons wrap instead of overflowing */
+.decision-area .button-row .btn { white-space: normal; text-align: left; max-width: 100%; }

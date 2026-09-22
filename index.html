@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Assish Sapkota</title>
 <meta name="description" content="Assish Sapkota, procurement and supply chain, Helsinki. Try a live sourcing decision and see how small-company purchasing experience maps to a procurement team.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Assish Sapkota">
+<meta property="og:title" content="Assish Sapkota · Procurement and supply chain, Helsinki">
+<meta property="og:description" content="The cheapest quote is not always the right buy. Try a live sourcing decision, see my purchasing experience and open ProcureFlow, my procurement portfolio project.">
+<meta property="og:url" content="https://assishnepali.github.io/">
+<meta property="og:image" content="https://assishnepali.github.io/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:image:alt" content="Assish Sapkota portfolio: the cheapest quote is not always the right buy">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231A58CF'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='27' font-weight='700' fill='white' text-anchor='middle'%3EAS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
@@ -467,6 +478,17 @@ a { color: var(--signal); text-underline-offset: 0.18em; }
 }
 .btn:hover { filter: brightness(1.08); }
 .small { font-size: 0.92rem; color: var(--muted); }
+.case { display: grid; gap: 12px; margin: 4px 0 0; }
+.case > div { border-left: 3px solid var(--signal); padding: 2px 0 2px 14px; }
+.case dt { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--signal); margin-bottom: 2px; }
+.case dd { margin: 0; }
+.shot { margin: 6px 0 0; }
+.shot img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--rule); box-shadow: 0 12px 34px var(--shadow); }
+.shot a:hover img { border-color: var(--signal); }
+.shot figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+.project__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn--quiet { background: transparent; color: var(--ink); border: 1px solid var(--rule-strong); }
+
 
 .list { list-style: none; margin: 0; padding: 0; }
 .list li {
@@ -758,14 +780,47 @@ a { color: var(--signal); text-underline-offset: 0.18em; }
             <span lang="en">The same thinking as a working tool in the browser: purchasing requests, like-for-like quotation comparison, a recorded supplier decision, purchase orders and goods receipts, including partial and late deliveries.</span>
             <span lang="fi">Sama ajattelu toimivana selainsovelluksena: hankintapyynnöt, tarjousten vertailu samaa samaan, kirjattu toimittajavalinta, ostotilaukset ja tavaran vastaanotto, myös osittaiset ja myöhästyneet toimitukset.</span>
           </p>
+
+          <dl class="case">
+            <div>
+              <dt><span lang="en">The problem</span><span lang="fi">Ongelma</span></dt>
+              <dd><span lang="en">Three offers for the same boxes. The lowest unit price is not the lowest total, and the lowest total arrives five days late.</span><span lang="fi">Kolme tarjousta samoista laatikoista. Halvin kappalehinta ei ole halvin kokonaishinta, ja halvin kokonaishinta tulee viisi päivää myöhässä.</span></dd>
+            </div>
+            <div>
+              <dt><span lang="en">What it does</span><span lang="fi">Mitä se tekee</span></dt>
+              <dd><span lang="en">Compares offers on total cost, suggests the cheapest one that meets the date, asks for a written reason to choose otherwise, turns the choice into a purchase order and flags late deliveries.</span><span lang="fi">Vertaa tarjouksia kokonaishinnalla, suosittelee halvinta ajoissa ehtivää, pyytää kirjallisen perustelun muulle valinnalle, tekee valinnasta ostotilauksen ja nostaa myöhästyneet toimitukset esiin.</span></dd>
+            </div>
+            <div>
+              <dt><span lang="en">What it shows</span><span lang="fi">Mitä se kertoo minusta</span></dt>
+              <dd><span lang="en">That I know the steps from quotation to delivery and where they go wrong in practice: freight, delivery dates, part deliveries and follow-up.</span><span lang="fi">Tunnen vaiheet tarjouksesta toimitukseen ja kohdat, joissa ne käytännössä menevät pieleen: rahti, toimituspäivät, osatoimitukset ja seuranta.</span></dd>
+            </div>
+          </dl>
+
+          <figure class="shot">
+            <a href="procureflow/?tour" class="tour-link" tabindex="-1">
+              <img src="img/procureflow-tour.jpg" width="1200" height="750" loading="lazy"
+                alt="ProcureFlow showing a late purchase order: 250 of 400 pieces outstanding, 18 days after the confirmed date, with the guided tour explaining it on the right.">
+            </a>
+            <figcaption>
+              <span lang="en">Step 5 of the guided tour: a late order, with the original promised date kept on record.</span>
+              <span lang="fi">Esittelyn 5. askel: myöhässä oleva tilaus, jonka alkuperäinen luvattu päivä säilyy tiedoissa.</span>
+            </figcaption>
+          </figure>
+
           <p class="small">
             <span lang="en">I defined the purchasing workflow and the decision rules it follows. The code was written with AI assistance. All organisations and transactions in it are fictional.</span>
             <span lang="fi">Määrittelin hankintaprosessin ja päätössäännöt, joita se noudattaa. Koodi on kirjoitettu tekoälyn avustamana. Kaikki sen organisaatiot ja tapahtumat ovat kuvitteellisia.</span>
           </p>
-          <a class="btn" id="procureflowLink" href="procureflow/">
-            <span lang="en">Open ProcureFlow</span><span lang="fi">Avaa ProcureFlow</span>
-            <span aria-hidden="true">→</span>
-          </a>
+          <div class="project__actions">
+            <a class="btn tour-link" href="procureflow/?tour">
+              <span aria-hidden="true">▶</span>
+              <span lang="en">Take the one-minute tour</span><span lang="fi">Katso minuutin esittely</span>
+            </a>
+            <a class="btn btn--quiet" id="procureflowLink" href="procureflow/">
+              <span lang="en">Open ProcureFlow</span><span lang="fi">Avaa ProcureFlow</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -881,7 +936,7 @@ a { color: var(--signal); text-underline-offset: 0.18em; }
 // Fill these in to show a contact block at the bottom of the page.
 // Leave them empty ("") to hide it.
 var CONTACT = {
-  email: "",
+  email: "assishnepali@gmail.com",
   linkedin: "https://www.linkedin.com/in/assishsapkota"   // full address, e.g. "https://www.linkedin.com/in/your-name"
 };
 var PROCUREFLOW_URL = "procureflow/";
@@ -1223,6 +1278,14 @@ var PROCUREFLOW_URL = "procureflow/";
 
   /* ---------- start ---------- */
   document.getElementById("procureflowLink").href = PROCUREFLOW_URL;
+  // Open ProcureFlow in the language the visitor is reading this page in.
+  Array.prototype.forEach.call(document.querySelectorAll(".tour-link, #procureflowLink"), function (a) {
+    a.addEventListener("click", function () {
+      var lang = document.getElementById("page").getAttribute("data-lang") === "fi" ? "fi" : "en";
+      var base = a.classList.contains("tour-link") ? PROCUREFLOW_URL + "?tour&lang=" : PROCUREFLOW_URL + "?lang=";
+      a.href = base + lang;
+    });
+  });
   buildChart();
   renderContact();
   slider.addEventListener("input", render);

@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ProcureFlow &ndash; Procurement Portfolio Prototype</title>
   <meta name="description" content="ProcureFlow is a fictional procurement portfolio prototype: purchasing requests, like-for-like quotation comparison, justified supplier decisions, purchase orders and goods receipts.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Assish Sapkota">
+  <meta property="og:title" content="ProcureFlow: a buyer's workday in one screen">
+  <meta property="og:description" content="Compare supplier quotations on total cost, pick the cheapest one that arrives on time, and follow up late orders. A procurement portfolio project by Assish Sapkota, with a one-minute guided tour.">
+  <meta property="og:url" content="https://assishnepali.github.io/procureflow/">
+  <meta property="og:image" content="https://assishnepali.github.io/procureflow/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="627">
+  <meta property="og:image:alt" content="ProcureFlow overview with the intro panel and the guided tour button">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232b74e8'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='27' font-weight='700' fill='white' text-anchor='middle'%3EPF%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -31,6 +42,10 @@
         <button class="nav__link" type="button" data-view="about">About</button>
       </nav>
 
+      <button type="button" class="tour-launch" id="tourLaunch">
+        <span class="play" aria-hidden="true"></span><span data-t="launch"></span>
+      </button>
+
       <div class="sidebar__footer">
         <p class="sidebar__byline">
           An AI-assisted procurement portfolio prototype by <strong>Assish Sapkota</strong>.
@@ -50,6 +65,43 @@
 
       <!-- ---------- VIEW: OVERVIEW ---------- -->
       <section class="view" id="view-overview" aria-labelledby="overviewTitle">
+
+        <!-- Intro for a first-time visitor (a recruiter opening the link).
+             Texts are filled in by js/tour.js in Finnish or English. -->
+        <section class="intro" id="intro" aria-labelledby="introTitle" hidden>
+          <div class="intro__top">
+            <p class="intro__eyebrow" data-t="eyebrow"></p>
+            <div class="intro__tools">
+              <div class="lang" role="group" aria-label="Language / Kieli">
+                <button type="button" class="lang__btn" data-lang="fi">FI</button>
+                <button type="button" class="lang__btn" data-lang="en">EN</button>
+              </div>
+              <button type="button" class="intro__close" id="introClose" data-t-aria="close">&times;</button>
+            </div>
+          </div>
+          <h2 class="intro__title" id="introTitle" data-t="title"></h2>
+          <p class="intro__text" data-t="text"></p>
+          <ul class="intro__points">
+            <li data-t="p1"></li>
+            <li data-t="p2"></li>
+            <li data-t="p3"></li>
+          </ul>
+          <div class="intro__actions">
+            <button type="button" class="btn btn--primary intro__play" id="tourStart">
+              <span class="play" aria-hidden="true"></span><span data-t="start"></span>
+            </button>
+            <button type="button" class="btn btn--ghost" id="introExplore" data-t="explore"></button>
+          </div>
+          <p class="intro__foot">
+            <span data-t="credit"></span>
+            <span class="intro__links">
+              <a href="https://assishnepali.github.io" target="_blank" rel="noopener">Portfolio</a>
+              <a href="https://www.linkedin.com/in/assishsapkota/" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="mailto:assishnepali@gmail.com" data-t="email"></a>
+            </span>
+          </p>
+        </section>
+
         <div class="page-head">
           <div>
             <h1 id="overviewTitle">Overview</h1>
@@ -899,5 +951,6 @@
   <script src="js/store.js"></script>
   <script src="js/logic.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/tour.js"></script>
 </body>
 </html>

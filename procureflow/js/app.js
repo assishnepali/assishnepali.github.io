@@ -319,7 +319,7 @@
         "</div>" +
         renderComparison(comparison) +
         renderRecommendation(comparison, request) +
-        renderDecisionArea(request, comparison, linkedOrder) +
+        '<div class="decision-area">' + renderDecisionArea(request, comparison, linkedOrder) + "</div>" +
       "</section>";
   }
 
